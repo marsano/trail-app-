@@ -6,6 +6,7 @@ import {
   sessionToGarminRunningPayload,
   shouldSkipGarminSync,
 } from '@/lib/garmin'
+import type { GarminTokensPayload } from '@/lib/garmin-types'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -69,10 +70,60 @@ function extractWorkoutId(created: unknown): string | number | null {
 interface ConnectBody {
   email?: string
   password?: string
+  /** Session OAuth issue de exportToken après une connexion réussie. */
+  garminTokens?: unknown
   sessionIds?: string[]
   dryRun?: boolean
   dateOverrides?: Record<string, string>
   programId?: string
+}
+
+function parseGarminTokens(raw: unknown): GarminTokensPayload | null {
+  if (raw == null || typeof raw !== 'object') return null
+  const o = raw as Record<string, unknown>
+  const o1 = o.oauth1
+  const o2 = o.oauth2
+  if (!o1 || typeof o1 !== 'object' || !o2 || typeof o2 !== 'object') return null
+  const t1 = o1 as Record<string, unknown>
+  const t2 = o2 as Record<string, unknown>
+  if (
+    typeof t1.oauth_token !== 'string' ||
+    typeof t1.oauth_token_secret !== 'string' ||
+    typeof t2.access_token !== 'string' ||
+    typeof t2.refresh_token !== 'string'
+  ) {
+    return null
+  }
+  return raw as GarminTokensPayload
+}
+
+async function getGarminClient(
+  email: string,
+  password: string | undefined,
+  tokensIn: GarminTokensPayload | null
+): Promise<{
+  client: InstanceType<typeof GarminConnect>
+  tokens: GarminTokensPayload
+}> {
+  if (tokensIn) {
+    const client = new GarminConnect({ username: email, password: 'unused' })
+    client.loadToken(tokensIn.oauth1, tokensIn.oauth2)
+    await client.client.checkTokenVaild()
+    await client.getUserSettings()
+    return {
+      client,
+      tokens: client.exportToken() as GarminTokensPayload,
+    }
+  }
+  if (password) {
+    const client = new GarminConnect({ username: email, password })
+    await client.login(email, password)
+    return {
+      client,
+      tokens: client.exportToken() as GarminTokensPayload,
+    }
+  }
+  throw new Error('AUTH_MISSING')
 }
 
 function parseProgramId(raw: unknown): ProgramId | null {
@@ -104,10 +155,22 @@ export async function POST(req: Request) {
   }
 
   const email = typeof body.email === 'string' ? body.email.trim() : ''
-  const password = typeof body.password === 'string' ? body.password : ''
-  if (!email || !password) {
+  const password =
+    typeof body.password === 'string' && body.password.length > 0
+      ? body.password
+      : undefined
+  const tokensIn = parseGarminTokens(body.garminTokens)
+
+  if (!email) {
+    return Response.json({ error: 'Email Garmin requis' }, { status: 400 })
+  }
+
+  if (!tokensIn && !password) {
     return Response.json(
-      { error: 'Email et mot de passe requis' },
+      {
+        error:
+          'Mot de passe requis (première connexion), ou session Garmin expirée — reconnecte-toi.',
+      },
       { status: 400 }
     )
   }
@@ -138,12 +201,18 @@ export async function POST(req: Request) {
   }
 
   let client: InstanceType<typeof GarminConnect>
+  let tokensOut: GarminTokensPayload
   try {
-    client = new GarminConnect({ username: email, password })
-    await client.login(email, password)
-    // Ne pas appeler getUserProfile() ici : l’endpoint « social » peut échouer
-    // alors que la session OAuth est valide (changement côté Garmin).
+    const r = await getGarminClient(email, password, tokensIn)
+    client = r.client
+    tokensOut = r.tokens
   } catch (e: unknown) {
+    if (e instanceof Error && e.message === 'AUTH_MISSING') {
+      return Response.json(
+        { error: 'Authentification Garmin incomplète' },
+        { status: 400 }
+      )
+    }
     const raw = errMsg(e) || 'Connexion Garmin impossible'
     return Response.json(
       { error: normalizeGarminError(raw) },
@@ -152,7 +221,11 @@ export async function POST(req: Request) {
   }
 
   if (dryRun) {
-    return Response.json({ success: true as const, synced: [] as string[] })
+    return Response.json({
+      success: true as const,
+      synced: [] as string[],
+      tokens: tokensOut,
+    })
   }
 
   const synced: string[] = []
@@ -209,5 +282,9 @@ export async function POST(req: Request) {
     }
   }
 
-  return Response.json({ success: true as const, synced })
+  return Response.json({
+    success: true as const,
+    synced,
+    tokens: client.exportToken() as GarminTokensPayload,
+  })
 }

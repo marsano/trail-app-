@@ -13,8 +13,9 @@ Ouvre [http://localhost:3000](http://localhost:3000) : page d’accueil avec le 
 
 ### Garmin Connect
 
-La sync repose sur le package npm [`garmin-connect`](https://www.npmjs.com/package/garmin-connect). Limites connues :
+La sync repose sur le package npm [`garmin-connect`](https://www.npmjs.com/package/garmin-connect).
 
+- **Pas de bouton « Se connecter avec Garmin » (OAuth public)** : Garmin ne propose pas ce flux pour les applications web tierces comme pour Google ou Strava. La 1re connexion utilise **email + mot de passe** ; l’API établit ensuite une **session OAuth** (jetons) renvoyés au navigateur et **stockés localement** (par programme) pour les prochaines syncs **sans redemander le mot de passe** tant que la session reste valide.
 - **MFA / 2FA** : non géré par la lib — si ton compte impose une double authentification, la connexion peut échouer (message explicite renvoyé par l’API).
 - **Hébergement** : Garmin peut parfois bloquer ou limiter les IP de datacenters ; en cas d’échec uniquement en production, tester en local (`npm run dev`) aide à isoler le problème.
 

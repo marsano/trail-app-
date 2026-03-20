@@ -5,6 +5,7 @@ import {
   type StateStorage,
 } from 'zustand/middleware'
 import type { ProgramId } from '@/lib/registry'
+import type { GarminTokensPayload } from '@/lib/garmin-types'
 
 export interface SessionState {
   done: boolean
@@ -25,12 +26,18 @@ export interface ProgramSlice {
   sessionStates: Record<string, SessionState>
   /** Connexion Garmin validée pour ce programme (indépendant de l’autre athlète). */
   garminConnected: boolean
+  /** Email Garmin utilisé pour la session (affichage + constructeur client côté API). */
+  garminAccountEmail: string | null
+  /** Jetons OAuth après 1re connexion — plus besoin du mot de passe tant qu’ils sont valides. */
+  garminTokens: GarminTokensPayload | null
 }
 
 const emptyProgram = (): ProgramSlice => ({
   dateOverrides: {},
   sessionStates: {},
   garminConnected: false,
+  garminAccountEmail: null,
+  garminTokens: null,
 })
 
 function sliceOrEmpty(
@@ -46,6 +53,8 @@ function sliceOrEmpty(
     dateOverrides: p.dateOverrides ?? {},
     sessionStates: p.sessionStates ?? {},
     garminConnected: p.garminConnected ?? false,
+    garminAccountEmail: p.garminAccountEmail ?? null,
+    garminTokens: p.garminTokens ?? null,
   }
 }
 
@@ -59,6 +68,11 @@ export interface PlanStore {
   resetSessionDate: (programId: ProgramId, id: string) => void
   markGarminSynced: (programId: ProgramId, ids: string[]) => void
   setGarminConnected: (programId: ProgramId, v: boolean) => void
+  /** Enregistre email + jetons après connexion réussie (ou met à jour après sync). */
+  setGarminSession: (
+    programId: ProgramId,
+    payload: { email: string; tokens: GarminTokensPayload } | null
+  ) => void
 }
 
 type LegacyPersisted = {
@@ -253,6 +267,35 @@ export const usePlanStore = create<PlanStore>()(
               [programId]: {
                 ...cur,
                 garminConnected: v,
+              },
+            },
+          }
+        }),
+
+      setGarminSession: (programId, payload) =>
+        set((s) => {
+          const cur = sliceOrEmpty(s.programs, programId)
+          if (payload === null) {
+            return {
+              programs: {
+                ...s.programs,
+                [programId]: {
+                  ...cur,
+                  garminConnected: false,
+                  garminAccountEmail: null,
+                  garminTokens: null,
+                },
+              },
+            }
+          }
+          return {
+            programs: {
+              ...s.programs,
+              [programId]: {
+                ...cur,
+                garminConnected: true,
+                garminAccountEmail: payload.email,
+                garminTokens: payload.tokens,
               },
             },
           }

@@ -9,7 +9,14 @@ npm install
 npm run dev
 ```
 
-Ouvre [http://localhost:3000](http://localhost:3000) : page d’accueil avec le choix du programme (**Matthieu** 76 km ou **Loïc** 30 km). Les URLs sont `/matthieu`, `/matthieu/calendar`, `/loic`, etc.
+Ouvre [http://localhost:3000](http://localhost:3000) : page d’accueil avec le choix du programme (**Matthieu** 76 km ou **Loïc** 33 km). Les URLs sont `/matthieu`, `/matthieu/calendar`, `/loic`, etc.
+
+### Garmin Connect
+
+La sync repose sur le package npm [`garmin-connect`](https://www.npmjs.com/package/garmin-connect). Limites connues :
+
+- **MFA / 2FA** : non géré par la lib — si ton compte impose une double authentification, la connexion peut échouer (message explicite renvoyé par l’API).
+- **Hébergement** : Garmin peut parfois bloquer ou limiter les IP de datacenters ; en cas d’échec uniquement en production, tester en local (`npm run dev`) aide à isoler le problème.
 
 ## Déploiement Vercel
 

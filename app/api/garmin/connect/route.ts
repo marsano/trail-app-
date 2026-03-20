@@ -9,6 +9,8 @@ import {
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
+/** Limite côté Vercel pour les syncs longues (plusieurs séances). */
+export const maxDuration = 60
 
 const SCHEDULE_BASE = 'https://connectapi.garmin.com/workout-service/schedule'
 
@@ -27,6 +29,41 @@ function errMsg(e: unknown): string {
   }
   if (e instanceof Error) return e.message
   return String(e)
+}
+
+/** Messages garmin-connect (EN) → explication exploitable en français. */
+function normalizeGarminError(message: string): string {
+  const low = message.toLowerCase()
+  if (
+    low.includes('mfa') ||
+    low.includes('ticket not found') ||
+    low.includes('ticket not found or mfa')
+  ) {
+    return 'Garmin exige une étape de sécurité supplémentaire (MFA / 2FA). Le client « garmin-connect » ne gère pas le MFA : désactive la double authentification sur ton compte Garmin le temps de la sync, ou utilise un compte sans 2FA pour ce flux.'
+  }
+  if (low.includes('csrf not found')) {
+    return 'Connexion impossible : la page d’authentification Garmin a changé. Réessaie plus tard ou mets à jour le package npm « garmin-connect ».'
+  }
+  if (low.includes('accountlocked')) {
+    return 'Compte Garmin verrouillé : ouvre connect.garmin.com dans un navigateur pour déverrouiller le compte, puis réessaie.'
+  }
+  if (low.includes('phone number')) {
+    return 'Garmin demande une mise à jour du numéro de téléphone sur ton profil — fais-le sur connect.garmin.com avant de réessayer.'
+  }
+  return message
+}
+
+function extractWorkoutId(created: unknown): string | number | null {
+  if (created == null || typeof created !== 'object') return null
+  const o = created as Record<string, unknown>
+  const top = o.workoutId
+  if (top != null) return top as string | number
+  const w = o.workout
+  if (w != null && typeof w === 'object' && 'workoutId' in w) {
+    const id = (w as { workoutId: unknown }).workoutId
+    if (id != null) return id as string | number
+  }
+  return null
 }
 
 interface ConnectBody {
@@ -104,10 +141,12 @@ export async function POST(req: Request) {
   try {
     client = new GarminConnect({ username: email, password })
     await client.login(email, password)
-    await client.getUserProfile()
+    // Ne pas appeler getUserProfile() ici : l’endpoint « social » peut échouer
+    // alors que la session OAuth est valide (changement côté Garmin).
   } catch (e: unknown) {
+    const raw = errMsg(e) || 'Connexion Garmin impossible'
     return Response.json(
-      { error: errMsg(e) || 'Connexion Garmin impossible' },
+      { error: normalizeGarminError(raw) },
       { status: 401 }
     )
   }
@@ -130,7 +169,7 @@ export async function POST(req: Request) {
 
     try {
       const created = await client.addRunningWorkout(name, meters, description)
-      const wid = created.workoutId
+      const wid = extractWorkoutId(created)
       if (wid == null) {
         return Response.json(
           { error: 'Garmin n’a pas renvoyé d’identifiant workout' },
@@ -140,12 +179,15 @@ export async function POST(req: Request) {
       await client.client.post(
         `${SCHEDULE_BASE}/${String(wid)}`,
         { date: dateStr },
-        {}
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
       )
       synced.push(id)
     } catch (e: unknown) {
-      const msg = errMsg(e)
-      const low = msg.toLowerCase()
+      const rawMsg = errMsg(e)
+      const msg = normalizeGarminError(rawMsg)
+      const low = rawMsg.toLowerCase()
       if (
         low.includes('duplicate') ||
         low.includes('already') ||

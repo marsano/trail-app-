@@ -11,7 +11,7 @@ npm run dev
 
 Ouvre [http://localhost:3000](http://localhost:3000) : page d’accueil avec le choix du programme (**Matthieu**, **Loïc**, **Thelma**). Les URLs sont `/matthieu`, `/matthieu/calendar`, `/matthieu/print`, `/loic`, `/thelma`, etc.
 
-- **Thelma** : plan vide pour l’instant (`lib/plans/thelma.ts`) — à compléter comme pour les autres.
+- **Thelma** : `lib/plans/thelma.ts` (18 km / 1000 D+) — régénérable depuis `plan-thelma.js` dans Téléchargements avec le même principe que le script `sync-plans-from-downloads.mjs`.
 - **Tableau / impression** : depuis la nav d’un programme, lien **Tableau** (`/[program]/print`) : tableau avec dates effectives, type, km, D+, détail séance et notes ; boutons **Imprimer** (aperçu système) et **Télécharger CSV** (séparateur `;`, UTF-8 avec BOM pour Excel).
 
 - **Navigation** : barre du haut fixe au défilement.
@@ -19,7 +19,7 @@ Ouvre [http://localhost:3000](http://localhost:3000) : page d’accueil avec le 
 - **Édition** : chaque séance peut être modifiée (contenu, km, D+, type…) ou retirée du plan localement ; les courses ne sont plus verrouillées dans le calendrier.
 - **Structure Garmin** : les séances sont découpées en **3 blocs** (échauffement, intervalles, récupération) avec **allure cible** chacun ; la description structurée est envoyée à Garmin Connect. Sans `blocks` dans le JSON du plan, le texte `content` est **découpé automatiquement** sur les séparateurs `|` (échauffement, cœur, RAC / retour).
 - **Volume** : chaque carte affiche **km / D+** indicatifs et une **durée estimée** (≈) à partir des durées dans le texte (35', 1h30, séries…), avec repli sur km × min/km si peu de signal temporel.
-- **Mise à jour des plans** : `node scripts/sync-plans-from-downloads.mjs` régénère `lib/plans/loic.ts` et `matthieu.ts` depuis les fichiers `plan-*-corrige (3).js` du dossier Téléchargements (adapter les chemins dans le script si besoin).
+- **Mise à jour des plans** : `node scripts/sync-plans-from-downloads.mjs` régénère `lib/plans/loic.ts`, `matthieu.ts` et `thelma.ts` depuis les fichiers du dossier Téléchargements (chemins dans le script si besoin).
 
 ### Garmin Connect
 

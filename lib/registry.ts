@@ -40,7 +40,7 @@ const REGISTRY: Record<ProgramId, ProgramBundle> = {
     id: 'thelma',
     athleteName: 'Thelma',
     slug: 'thelma',
-    distanceLabel: 'Plan à venir',
+    distanceLabel: '18 km / 1000 D+',
     plan: Thelma.PLAN,
     raceInfo: Thelma.RACE_INFO,
     events: Thelma.EVENTS,

@@ -6,6 +6,7 @@ import {
 } from 'zustand/middleware'
 import type { ProgramId } from '@/lib/registry'
 import type { GarminTokensPayload } from '@/lib/garmin-types'
+import type { SessionEdit } from '@/lib/session-customization'
 
 export interface SessionState {
   done: boolean
@@ -30,6 +31,10 @@ export interface ProgramSlice {
   garminAccountEmail: string | null
   /** Jetons OAuth après 1re connexion — plus besoin du mot de passe tant qu’ils sont valides. */
   garminTokens: GarminTokensPayload | null
+  /** Surcharges locales (contenu, km, D+, type…) par id de séance. */
+  sessionEdits: Record<string, SessionEdit>
+  /** Séances masquées du plan (suppression locale). */
+  deletedSessionIds: string[]
 }
 
 const emptyProgram = (): ProgramSlice => ({
@@ -38,6 +43,8 @@ const emptyProgram = (): ProgramSlice => ({
   garminConnected: false,
   garminAccountEmail: null,
   garminTokens: null,
+  sessionEdits: {},
+  deletedSessionIds: [],
 })
 
 function sliceOrEmpty(
@@ -55,6 +62,8 @@ function sliceOrEmpty(
     garminConnected: p.garminConnected ?? false,
     garminAccountEmail: p.garminAccountEmail ?? null,
     garminTokens: p.garminTokens ?? null,
+    sessionEdits: p.sessionEdits ?? {},
+    deletedSessionIds: p.deletedSessionIds ?? [],
   }
 }
 
@@ -73,6 +82,13 @@ export interface PlanStore {
     programId: ProgramId,
     payload: { email: string; tokens: GarminTokensPayload } | null
   ) => void
+  setSessionEdit: (
+    programId: ProgramId,
+    id: string,
+    patch: SessionEdit
+  ) => void
+  clearSessionEdit: (programId: ProgramId, id: string) => void
+  deleteSession: (programId: ProgramId, id: string) => void
 }
 
 type LegacyPersisted = {
@@ -296,6 +312,63 @@ export const usePlanStore = create<PlanStore>()(
                 garminConnected: true,
                 garminAccountEmail: payload.email,
                 garminTokens: payload.tokens,
+              },
+            },
+          }
+        }),
+
+      setSessionEdit: (programId, id, patch) =>
+        set((s) => {
+          const cur = sliceOrEmpty(s.programs, programId)
+          const merged = { ...(cur.sessionEdits[id] ?? {}), ...patch }
+          return {
+            programs: {
+              ...s.programs,
+              [programId]: {
+                ...cur,
+                sessionEdits: { ...cur.sessionEdits, [id]: merged },
+              },
+            },
+          }
+        }),
+
+      clearSessionEdit: (programId, id) =>
+        set((s) => {
+          const cur = sliceOrEmpty(s.programs, programId)
+          const next = { ...cur.sessionEdits }
+          delete next[id]
+          return {
+            programs: {
+              ...s.programs,
+              [programId]: {
+                ...cur,
+                sessionEdits: next,
+              },
+            },
+          }
+        }),
+
+      deleteSession: (programId, id) =>
+        set((s) => {
+          const cur = sliceOrEmpty(s.programs, programId)
+          const nextOverrides = { ...cur.dateOverrides }
+          delete nextOverrides[id]
+          const nextStates = { ...cur.sessionStates }
+          delete nextStates[id]
+          const nextEdits = { ...cur.sessionEdits }
+          delete nextEdits[id]
+          const del = cur.deletedSessionIds.includes(id)
+            ? cur.deletedSessionIds
+            : [...cur.deletedSessionIds, id]
+          return {
+            programs: {
+              ...s.programs,
+              [programId]: {
+                ...cur,
+                deletedSessionIds: del,
+                dateOverrides: nextOverrides,
+                sessionStates: nextStates,
+                sessionEdits: nextEdits,
               },
             },
           }

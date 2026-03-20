@@ -1,5 +1,4 @@
 import { notFound } from 'next/navigation'
-import { groupPlanByPhaseWeek } from '@/lib/plan-helpers'
 import { getProgramBundle, isProgramSlug } from '@/lib/registry'
 import { ClientOnly } from '@/components/ClientOnly'
 import { PlanPageClient } from '@/components/PlanPageClient'
@@ -11,7 +10,6 @@ export default function PlanPage({
 }) {
   if (!isProgramSlug(params.program)) notFound()
   const bundle = getProgramBundle(params.program)
-  const grouped = groupPlanByPhaseWeek(bundle.plan)
 
   return (
     <div>
@@ -21,12 +19,13 @@ export default function PlanPage({
         </h1>
         <p className="mt-2 max-w-2xl font-mono text-sm text-zinc-500">
           {bundle.distanceLabel} · coche les séances, note tes sensations,
-          synchronise avec Garmin.
+          synchronise avec Garmin. Déplacements calendrier et éditions sont
+          enregistrés localement.
         </p>
       </header>
 
       <ClientOnly>
-        <PlanPageClient grouped={grouped} />
+        <PlanPageClient />
       </ClientOnly>
     </div>
   )

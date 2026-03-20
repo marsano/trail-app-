@@ -22,7 +22,7 @@ export function AppNav() {
   ]
 
   return (
-    <nav className="border-b border-[var(--border)] bg-[var(--bg)]/90 backdrop-blur">
+    <nav className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--bg)]/95 backdrop-blur-md">
       <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-2 px-4 py-3 sm:gap-4">
         <Link
           href="/"

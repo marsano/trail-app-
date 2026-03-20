@@ -7,6 +7,8 @@ import {
   shouldSkipGarminSync,
 } from '@/lib/garmin'
 import type { GarminTokensPayload } from '@/lib/garmin-types'
+import type { SessionEdit } from '@/lib/session-customization'
+import { mergeSessionEdit } from '@/lib/session-customization'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -72,6 +74,8 @@ interface ConnectBody {
   password?: string
   /** Session OAuth issue de exportToken après une connexion réussie. */
   garminTokens?: unknown
+  /** Surcharges locales (contenu, km…) pour générer les workouts. */
+  sessionEdits?: Record<string, SessionEdit>
   sessionIds?: string[]
   dryRun?: boolean
   dateOverrides?: Record<string, string>
@@ -131,8 +135,15 @@ function parseProgramId(raw: unknown): ProgramId | null {
   return null
 }
 
-function findSession(programId: ProgramId, id: string) {
-  return getProgramBundle(programId).plan.find((s) => s.id === id)
+function findSessionMerged(
+  programId: ProgramId,
+  id: string,
+  edits?: Record<string, SessionEdit>
+) {
+  const base = getProgramBundle(programId).plan.find((s) => s.id === id)
+  if (!base) return undefined
+  if (!edits) return base
+  return mergeSessionEdit(base, edits, id)
 }
 
 function parseOverrides(raw: unknown): Record<string, string> {
@@ -186,6 +197,13 @@ export async function POST(req: Request) {
 
   const dateOverrides = parseOverrides(body.dateOverrides)
 
+  const sessionEdits =
+    body.sessionEdits != null &&
+    typeof body.sessionEdits === 'object' &&
+    !Array.isArray(body.sessionEdits)
+      ? (body.sessionEdits as Record<string, SessionEdit>)
+      : undefined
+
   const sessionIdsRaw = body.sessionIds
   const sessionIds =
     Array.isArray(sessionIdsRaw) &&
@@ -231,7 +249,7 @@ export async function POST(req: Request) {
   const synced: string[] = []
 
   for (const id of sessionIds!) {
-    const session = findSession(programId, id)
+    const session = findSessionMerged(programId, id, sessionEdits)
     if (!session) {
       return Response.json({ error: `Séance inconnue: ${id}` }, { status: 400 })
     }

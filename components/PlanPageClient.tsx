@@ -1,15 +1,23 @@
 'use client'
 
-import { usePlanStore } from '@/lib/store'
-import type { PhaseWeekGroup } from '@/lib/plan-helpers'
+import { useMemo } from 'react'
+import { groupPlanByEffectiveWeeks } from '@/lib/plan-helpers'
 import { PhaseHeader } from '@/components/PhaseHeader'
 import { WeekBlock } from '@/components/WeekBlock'
 import { useProgramId } from '@/components/ProgramContext'
+import { usePlanStore } from '@/lib/store'
+import { useEffectivePlan } from '@/hooks/useEffectivePlan'
 
-export function PlanPageClient({ grouped }: { grouped: PhaseWeekGroup[] }) {
+export function PlanPageClient() {
   const programId = useProgramId()
   const dateOverrides = usePlanStore(
     (s) => s.programs[programId]?.dateOverrides ?? {}
+  )
+  const plan = useEffectivePlan(programId)
+
+  const grouped = useMemo(
+    () => groupPlanByEffectiveWeeks(plan, dateOverrides),
+    [plan, dateOverrides]
   )
 
   return (
@@ -20,7 +28,7 @@ export function PlanPageClient({ grouped }: { grouped: PhaseWeekGroup[] }) {
           <div className="mt-6 space-y-8">
             {phase.weeks.map((w) => (
               <WeekBlock
-                key={`${phase.phase}-${w.week}`}
+                key={`${phase.phase}-${w.week}-${w.weekLabel ?? ''}`}
                 weekNum={w.week}
                 weekLabel={w.weekLabel}
                 sessions={w.sessions}

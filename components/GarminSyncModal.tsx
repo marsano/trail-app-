@@ -13,7 +13,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Progress } from '@/components/ui/progress'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { usePlanStore } from '@/lib/store'
-import { getProgramBundle } from '@/lib/registry'
+import { useEffectivePlan } from '@/hooks/useEffectivePlan'
 import { resolveSessionDate } from '@/lib/plan-helpers'
 import { useProgramId } from '@/components/ProgramContext'
 import { shouldSkipGarminSync } from '@/lib/garmin'
@@ -32,7 +32,10 @@ type ConnectResponse = {
 
 export function GarminSyncModal() {
   const programId = useProgramId()
-  const plan = getProgramBundle(programId).plan
+  const plan = useEffectivePlan(programId)
+  const sessionEdits = usePlanStore(
+    (s) => s.programs[programId]?.sessionEdits ?? {}
+  )
   const [open, setOpen] = useState(false)
   const [step, setStep] = useState<Step>(1)
   const [email, setEmail] = useState('')
@@ -117,6 +120,9 @@ export function GarminSyncModal() {
         if (!password) throw new Error('Indique ton mot de passe Garmin.')
         body.password = password
       }
+      if (Object.keys(sessionEdits).length > 0) {
+        body.sessionEdits = sessionEdits
+      }
 
       const res = await fetch('/api/garmin/connect', {
         method: 'POST',
@@ -176,6 +182,9 @@ export function GarminSyncModal() {
         body.garminTokens = garminTokens
       } else {
         body.password = password
+      }
+      if (Object.keys(sessionEdits).length > 0) {
+        body.sessionEdits = sessionEdits
       }
 
       const res = await fetch('/api/garmin/connect', {

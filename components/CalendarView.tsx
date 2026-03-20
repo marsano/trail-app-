@@ -11,7 +11,7 @@ import {
 } from '@dnd-kit/core'
 import type { Session } from '@/lib/plan-types'
 import type { ProgramId } from '@/lib/registry'
-import { getProgramBundle } from '@/lib/registry'
+import { useEffectivePlan } from '@/hooks/useEffectivePlan'
 import { resolveSessionDate } from '@/lib/plan-helpers'
 import { usePlanStore } from '@/lib/store'
 import { useProgramId } from '@/components/ProgramContext'
@@ -28,17 +28,10 @@ import { GripVertical } from 'lucide-react'
 const PREFIX_SESSION = 'session:'
 const PREFIX_DAY = 'day:'
 
-function DraggableSession({
-  session,
-  locked,
-}: {
-  session: Session
-  locked: boolean
-}) {
+function DraggableSession({ session }: { session: Session }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
       id: `${PREFIX_SESSION}${session.id}`,
-      disabled: locked,
     })
 
   const style = transform
@@ -53,21 +46,18 @@ function DraggableSession({
       style={style}
       className={cn(
         'mb-1 flex items-center gap-1 rounded border border-[var(--border)] bg-[var(--bg)] px-1 py-0.5 font-mono text-[10px] text-[var(--text)] sm:text-xs',
-        locked && 'opacity-60',
         isDragging && 'z-50 opacity-90 ring-1 ring-[var(--green)]'
       )}
     >
-      {!locked ? (
-        <button
-          type="button"
-          className="touch-none p-0.5 text-zinc-500 hover:text-[var(--text)]"
-          aria-label="Déplacer"
-          {...listeners}
-          {...attributes}
-        >
-          <GripVertical className="h-3 w-3 sm:h-4 sm:w-4" />
-        </button>
-      ) : null}
+      <button
+        type="button"
+        className="touch-none p-0.5 text-zinc-500 hover:text-[var(--text)]"
+        aria-label="Déplacer"
+        {...listeners}
+        {...attributes}
+      >
+        <GripVertical className="h-3 w-3 sm:h-4 sm:w-4" />
+      </button>
       <TypeBadge type={session.type} className="!text-[9px] sm:!text-[10px]" />
       {session.km != null ? (
         <span className="text-zinc-500">{session.km}k</span>
@@ -103,12 +93,11 @@ function DroppableDay({
       </div>
       <div className="max-h-[140px] space-y-1 overflow-y-auto">
         {sessions.map((s) => {
-          const locked = s.type === 'RACE' || s.isEvent === true
           const original = s.date
           const moved = dateOverrides[s.id] != null
           return (
             <div key={s.id}>
-              <DraggableSession session={s} locked={locked} />
+              <DraggableSession session={s} />
               {moved ? (
                 <Button
                   type="button"
@@ -138,7 +127,7 @@ function sessionsForDay(
 
 export function CalendarView() {
   const programId = useProgramId()
-  const plan = getProgramBundle(programId).plan
+  const plan = useEffectivePlan(programId)
   const dateOverrides = usePlanStore(
     (s) => s.programs[programId]?.dateOverrides ?? {}
   )

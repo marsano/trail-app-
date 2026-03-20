@@ -11,6 +11,10 @@ npm run dev
 
 Ouvre [http://localhost:3000](http://localhost:3000) : page d’accueil avec le choix du programme (**Matthieu** 76 km ou **Loïc** 33 km). Les URLs sont `/matthieu`, `/matthieu/calendar`, `/loic`, etc.
 
+- **Navigation** : barre du haut fixe au défilement.
+- **Calendrier ↔ plan** : les dates déplacées dans le calendrier s’appliquent au plan ; le plan est regroupé par **semaines calendaires** (lundi) selon les dates effectives.
+- **Édition** : chaque séance peut être modifiée (contenu, km, D+, type…) ou retirée du plan localement ; les courses ne sont plus verrouillées dans le calendrier.
+
 ### Garmin Connect
 
 La sync repose sur le package npm [`garmin-connect`](https://www.npmjs.com/package/garmin-connect).

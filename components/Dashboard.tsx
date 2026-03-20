@@ -14,6 +14,7 @@ import {
 } from 'recharts'
 import type { Session, SessionType } from '@/lib/plan-types'
 import { getProgramBundle } from '@/lib/registry'
+import { useEffectivePlan } from '@/hooks/useEffectivePlan'
 import { usePlanStore, getSessionState, type SessionState } from '@/lib/store'
 import { resolveSessionDate, daysBetween, todayISO } from '@/lib/plan-helpers'
 import { useProgramId } from '@/components/ProgramContext'
@@ -86,6 +87,7 @@ function StatCard({
 
 export function Dashboard() {
   const programId = useProgramId()
+  const plan = useEffectivePlan(programId)
   const sessionStates = usePlanStore(
     (s) => s.programs[programId]?.sessionStates ?? {}
   )
@@ -94,7 +96,7 @@ export function Dashboard() {
   )
 
   const stats = useMemo(() => {
-    const { plan, raceInfo, events } = getProgramBundle(programId)
+    const { raceInfo, events } = getProgramBundle(programId)
     const today = todayISO()
     const daysToRace = daysBetween(today, raceInfo.date)
     let doneCount = 0
@@ -148,7 +150,7 @@ export function Dashboard() {
       pieData,
       streak,
     }
-  }, [programId, sessionStates, dateOverrides])
+  }, [programId, plan, sessionStates, dateOverrides])
 
   return (
     <div className="space-y-10">

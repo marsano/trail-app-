@@ -8,6 +8,11 @@ import { FeedbackPanel } from '@/components/FeedbackPanel'
 import { SessionEditDialog } from '@/components/SessionEditDialog'
 import { usePlanStore, getSessionState } from '@/lib/store'
 import type { Session } from '@/lib/plan-types'
+import { getDisplayBlocks, BLOCK_UI_LABEL } from '@/lib/workout-blocks'
+import {
+  estimateSessionDurationMinutes,
+  formatDurationLabel,
+} from '@/lib/session-duration'
 import { resolveSessionDate, todayISO } from '@/lib/plan-helpers'
 import { useProgramId } from '@/components/ProgramContext'
 import { MessageSquare, Watch, CheckCircle2, Pencil, Trash2 } from 'lucide-react'
@@ -33,6 +38,7 @@ export function SessionCard({
   const today = todayISO()
   const isToday = effectiveDate === today
   const rowRef = useRef<HTMLDivElement>(null)
+  const durationMin = estimateSessionDurationMinutes(session)
 
   useEffect(() => {
     if (isToday && rowRef.current) {
@@ -79,11 +85,36 @@ export function SessionCard({
                   {session.day} · {effectiveDate}
                 </span>
               </div>
-              {session.content ? (
-                <p className="font-mono text-sm leading-relaxed text-[var(--text)] whitespace-pre-wrap">
-                  {session.content}
-                </p>
-              ) : null}
+              <div className="space-y-3">
+                {getDisplayBlocks(session).map((b) => {
+                  const empty = !b.content.trim() && !b.paceTarget?.trim()
+                  return (
+                    <div
+                      key={b.id}
+                      className="border-l-2 border-[var(--green)]/35 pl-3"
+                    >
+                      <p className="font-mono text-[11px] font-semibold uppercase tracking-wide text-[var(--green)]">
+                        {BLOCK_UI_LABEL[b.type]}
+                        {b.paceTarget?.trim() ? (
+                          <span className="font-normal text-zinc-400">
+                            {' '}
+                            @ {b.paceTarget.trim()}
+                          </span>
+                        ) : null}
+                      </p>
+                      {empty ? (
+                        <p className="font-mono text-xs italic text-zinc-600">
+                          —
+                        </p>
+                      ) : (
+                        <p className="mt-1 font-mono text-sm leading-relaxed text-[var(--text)] whitespace-pre-wrap">
+                          {b.content}
+                        </p>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
               {session.note ? (
                 <p className="font-mono text-xs text-zinc-500 whitespace-pre-wrap">
                   {session.note}
@@ -149,10 +180,13 @@ export function SessionCard({
           </div>
         </div>
 
-        <div className="mt-2 flex font-mono text-xs text-zinc-500 sm:hidden">
+        <div className="mt-2 flex flex-wrap gap-x-2 font-mono text-xs text-zinc-500 sm:hidden">
           {session.km != null ? <span>{session.km} km</span> : null}
           {session.km != null && session.dp != null ? <span> · </span> : null}
           {session.dp != null ? <span>{session.dp} D+</span> : null}
+          <span className="text-zinc-600">
+            ≈ {formatDurationLabel(durationMin)}
+          </span>
         </div>
 
         {feedbackOpen ? <FeedbackPanel sessionId={session.id} /> : null}

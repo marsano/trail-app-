@@ -2,7 +2,10 @@ import type { Session } from '@/lib/plan-types'
 
 /** Champs de séance modifiables par l’utilisateur (sans toucher au fichier source du plan). */
 export type SessionEdit = Partial<
-  Pick<Session, 'content' | 'km' | 'dp' | 'note' | 'type' | 'day'>
+  Pick<
+    Session,
+    'content' | 'km' | 'dp' | 'note' | 'type' | 'day' | 'blocks'
+  >
 >
 
 export function mergeSessionEdit(

@@ -2,6 +2,8 @@
 export type {
   Session,
   SessionType,
+  SessionWorkoutBlock,
+  WorkoutBlockType,
   RaceInfo,
   PlanEvent,
 } from './plan-types'

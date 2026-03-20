@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -9,9 +9,14 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import type { Session, SessionType } from '@/lib/plan-types'
+import type { Session, SessionType, SessionWorkoutBlock } from '@/lib/plan-types'
 import { usePlanStore } from '@/lib/store'
 import { useProgramId } from '@/components/ProgramContext'
+import { getDisplayBlocks, formatBlocksPlain, BLOCK_UI_LABEL } from '@/lib/workout-blocks'
+import {
+  estimateSessionDurationMinutes,
+  formatDurationLabel,
+} from '@/lib/session-duration'
 
 const SESSION_TYPES: SessionType[] = [
   'EF',
@@ -38,7 +43,9 @@ export function SessionEditDialog({
   const setSessionEdit = usePlanStore((s) => s.setSessionEdit)
   const clearSessionEdit = usePlanStore((s) => s.clearSessionEdit)
 
-  const [content, setContent] = useState(session.content)
+  const [blocks, setBlocks] = useState<SessionWorkoutBlock[]>(() =>
+    getDisplayBlocks(session)
+  )
   const [note, setNote] = useState(session.note)
   const [day, setDay] = useState(session.day)
   const [type, setType] = useState<SessionType>(session.type)
@@ -49,9 +56,24 @@ export function SessionEditDialog({
     session.dp != null ? String(session.dp) : ''
   )
 
+  const previewDuration = useMemo(() => {
+    const kmParsed =
+      kmStr.trim() === ''
+        ? null
+        : Number.parseFloat(kmStr.replace(',', '.'))
+    const km =
+      kmParsed != null && Number.isFinite(kmParsed) ? kmParsed : null
+    return estimateSessionDurationMinutes({
+      ...session,
+      km,
+      note,
+      blocks,
+    })
+  }, [session, kmStr, note, blocks])
+
   useEffect(() => {
     if (open) {
-      setContent(session.content)
+      setBlocks(getDisplayBlocks(session))
       setNote(session.note)
       setDay(session.day)
       setType(session.type)
@@ -60,6 +82,15 @@ export function SessionEditDialog({
     }
   }, [open, session])
 
+  function patchBlock(
+    index: number,
+    patch: Partial<Pick<SessionWorkoutBlock, 'content' | 'paceTarget'>>
+  ) {
+    setBlocks((prev) =>
+      prev.map((b, i) => (i === index ? { ...b, ...patch } : b))
+    )
+  }
+
   function save() {
     const kmParsed =
       kmStr.trim() === ''
@@ -67,8 +98,10 @@ export function SessionEditDialog({
         : Number.parseFloat(kmStr.replace(',', '.'))
     const dpParsed =
       dpStr.trim() === '' ? null : Number.parseInt(dpStr, 10)
+    const plain = formatBlocksPlain(blocks)
     setSessionEdit(programId, session.id, {
-      content,
+      blocks,
+      content: plain,
       note,
       day,
       type,
@@ -85,15 +118,16 @@ export function SessionEditDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] overflow-y-auto border-[var(--border)] bg-[var(--surface)]">
+      <DialogContent className="max-h-[90vh] overflow-y-auto border-[var(--border)] bg-[var(--surface)] sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>Modifier la séance</DialogTitle>
           <DialogDescription className="font-mono text-xs text-zinc-500">
-            Les changements sont enregistrés localement sur cet appareil (pas dans
-            le fichier source du plan).
+            Structure en 3 blocs (échauffement, intervalles, récupération) avec
+            allure cible pour chaque partie. Enregistré localement ; la
+            description structurée est envoyée à Garmin Connect.
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-3 font-mono text-sm">
+        <div className="space-y-4 font-mono text-sm">
           <div>
             <label className="mb-1 block text-xs text-zinc-500" htmlFor="se-type">
               Type
@@ -122,42 +156,91 @@ export function SessionEditDialog({
               className="w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-2"
             />
           </div>
-          <div>
-            <label className="mb-1 block text-xs text-zinc-500" htmlFor="se-km">
-              km (vide = aucun)
-            </label>
-            <input
-              id="se-km"
-              inputMode="decimal"
-              value={kmStr}
-              onChange={(e) => setKmStr(e.target.value)}
-              className="w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-2"
-            />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div>
+              <label className="mb-1 block text-xs text-zinc-500" htmlFor="se-km">
+                km total (indicatif)
+              </label>
+              <input
+                id="se-km"
+                inputMode="decimal"
+                value={kmStr}
+                onChange={(e) => setKmStr(e.target.value)}
+                className="w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-2"
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs text-zinc-500" htmlFor="se-dp">
+                D+ m
+              </label>
+              <input
+                id="se-dp"
+                inputMode="numeric"
+                value={dpStr}
+                onChange={(e) => setDpStr(e.target.value)}
+                className="w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-2"
+              />
+            </div>
           </div>
-          <div>
-            <label className="mb-1 block text-xs text-zinc-500" htmlFor="se-dp">
-              D+ m (vide = aucun)
-            </label>
-            <input
-              id="se-dp"
-              inputMode="numeric"
-              value={dpStr}
-              onChange={(e) => setDpStr(e.target.value)}
-              className="w-full rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-2"
-            />
+          <p className="text-[11px] text-zinc-500">
+            Total indicatif :{' '}
+            {(() => {
+              const k =
+                kmStr.trim() === ''
+                  ? NaN
+                  : Number.parseFloat(kmStr.replace(',', '.'))
+              if (!Number.isFinite(k)) return null
+              return `${k} km · `
+            })()}
+            ≈ {formatDurationLabel(previewDuration)}
+          </p>
+
+          <div className="space-y-4 border-t border-[var(--border)] pt-4">
+            <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+              Structure séance
+            </p>
+            {blocks.map((b, index) => (
+              <div
+                key={b.id}
+                className="rounded-md border border-[var(--border)] bg-[var(--bg)] p-3"
+              >
+                <p className="mb-2 text-xs font-semibold text-[var(--green)]">
+                  {BLOCK_UI_LABEL[b.type]}
+                </p>
+                <label className="mb-1 block text-[10px] text-zinc-500">
+                  Allure cible (@allure)
+                </label>
+                <input
+                  type="text"
+                  value={b.paceTarget ?? ''}
+                  onChange={(e) =>
+                    patchBlock(index, {
+                      paceTarget: e.target.value.trim() || null,
+                    })
+                  }
+                  placeholder="ex. 5:00/km, allure 10 km, Z3…"
+                  className="mb-2 w-full rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-1.5 text-xs"
+                />
+                <label className="mb-1 block text-[10px] text-zinc-500">
+                  Détail
+                </label>
+                <textarea
+                  rows={b.type === 'intervals' ? 5 : 3}
+                  value={b.content}
+                  onChange={(e) =>
+                    patchBlock(index, { content: e.target.value })
+                  }
+                  placeholder={
+                    b.type === 'intervals'
+                      ? 'ex. 3×3 km @allure + 2 min 30 récup'
+                      : '…'
+                  }
+                  className="w-full resize-y rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-1.5 text-xs"
+                />
+              </div>
+            ))}
           </div>
-          <div>
-            <label className="mb-1 block text-xs text-zinc-500" htmlFor="se-content">
-              Contenu (séance, répétitions…)
-            </label>
-            <textarea
-              id="se-content"
-              rows={5}
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              className="w-full resize-y rounded-md border border-[var(--border)] bg-[var(--bg)] px-3 py-2"
-            />
-          </div>
+
           <div>
             <label className="mb-1 block text-xs text-zinc-500" htmlFor="se-note">
               Note plan (rappels coach)

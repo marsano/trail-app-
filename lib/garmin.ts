@@ -1,4 +1,8 @@
 import type { Session, SessionType } from '@/lib/plan-types'
+import {
+  formatBlocksForGarminDescription,
+  garminWorkoutTitleSnippet,
+} from '@/lib/workout-blocks'
 
 const sportMap: Record<SessionType, string | null> = {
   EF: 'running',
@@ -18,12 +22,9 @@ export function sessionSportKey(type: SessionType): string {
 
 /** Text + distance payload for addRunningWorkout (Garmin). */
 export function sessionToGarminRunningPayload(session: Session) {
-  const name = `[${session.type}] ${session.content.slice(0, 60)}`
-  const parts: string[] = [session.content]
-  if (session.note) parts.push(session.note)
-  if (session.km != null) parts.push(`${session.km}km`)
-  if (session.dp != null) parts.push(`${session.dp}m D+`)
-  const description = parts.join('\n')
+  const snippet = garminWorkoutTitleSnippet(session)
+  const name = `[${session.type}] ${snippet}`
+  const description = formatBlocksForGarminDescription(session)
   const meters =
     session.km != null
       ? Math.max(1000, Math.round(session.km * 1000))

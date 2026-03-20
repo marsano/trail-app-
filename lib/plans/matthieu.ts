@@ -68,7 +68,7 @@ export const PLAN: Session[] = [
     "date": "2026-03-25",
     "day": "Mer",
     "type": "RENFO",
-    "content": "Éch: Activation 10' — cercles hanches, squats aériens, fentes latérales | Renfo jambes 30' — squats, fentes, gainage, mollets — bilan musculaire de départ | Retour calme 8' — étirements statiques mollets, quadris, ischio, fessiers",
+    "content": "Activation 10' (cercles hanches, squats aeriens, fentes lat.) | Renfo jambes 30' — squats, fentes, gainage, mollets — bilan musculaire de départ | RAC 8' etirements statiques (mollets, quadris, ischio, fessiers)",
     "km": null,
     "dp": null,
     "note": "Identifier les points faibles dès le début"
@@ -141,7 +141,7 @@ export const PLAN: Session[] = [
     "date": "2026-03-31",
     "day": "Mar",
     "type": "VMA",
-    "content": "Éch: Éch. 15' footing lent + 4 strides 80m | Fractionné 10×400m allure 5km — récup 1' — route | RAC 10' footing lent + étirements mollets/quadris",
+    "content": "Ech 15'@6:20/km + 4 strides 80m@3:36/km | 10x400m@3:36/km — recup 1'@6:40/km | RAC 10'@6:40/km",
     "km": 12,
     "dp": null,
     "note": ""
@@ -153,7 +153,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-01",
     "day": "Mer",
     "type": "RENFO",
-    "content": "Éch: Activation 10' — cercles hanches, squats aériens, fentes latérales | Escalier + gainage 45' — squats, fentes, planches | Retour calme 8' — étirements statiques mollets, quadris, ischio, fessiers",
+    "content": "Activation 10' (cercles hanches, squats aeriens, fentes lat.) | Escalier + gainage 45' — squats, fentes, planches | RAC 8' etirements statiques (mollets, quadris, ischio, fessiers)",
     "km": null,
     "dp": null,
     "note": "1× renfo/sem"
@@ -165,7 +165,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-02",
     "day": "Jeu",
     "type": "EF",
-    "content": "Footing récup route 50'",
+    "content": "Ech 10'@6:20/km | Footing récup route 50'@5:30/km | RAC 10'@6:40/km",
     "km": 10,
     "dp": null,
     "note": ""
@@ -189,7 +189,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-04",
     "day": "Sam",
     "type": "TEMPO",
-    "content": "Éch: Éch. 15' footing progressif (6:00→5:00/km) | 3×2km allure 5km (3:45/km) — récup 2' — route | RAC 10' footing très lent + étirements dynamiques",
+    "content": "Ech 15'@6:20/km | 3x2km@3:57/km — recup 2'@5:30/km | RAC 10'@6:40/km",
     "km": 16,
     "dp": null,
     "note": ""
@@ -226,7 +226,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-07",
     "day": "Mar",
     "type": "VMA",
-    "content": "Éch: Éch. 15' footing lent + 4 strides 80m | 6×600m allure 5km cible — récup 2' — route | RAC 10' footing lent + étirements mollets/quadris",
+    "content": "Ech 15'@6:20/km + 4 strides 80m@3:36/km | 6x600m@3:36/km — recup 2'@6:40/km | RAC 10'@6:40/km",
     "km": 12,
     "dp": null,
     "note": ""
@@ -238,7 +238,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-08",
     "day": "Mer",
     "type": "RENFO",
-    "content": "Éch: Activation 10' — cercles hanches, squats aériens, fentes latérales | Escalier + renfo léger 30' | Retour calme 8' — étirements statiques mollets, quadris, ischio, fessiers",
+    "content": "Activation 10' (cercles hanches, squats aeriens, fentes lat.) | Escalier + renfo léger 30' | RAC 8' etirements statiques (mollets, quadris, ischio, fessiers)",
     "km": null,
     "dp": null,
     "note": ""
@@ -274,7 +274,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-11",
     "day": "Sam",
     "type": "TEMPO",
-    "content": "Éch: Éch. 15' footing progressif (6:00→5:00/km) | 2×1km allure race + strides — 30' total — route | RAC 10' footing très lent + étirements dynamiques",
+    "content": "Ech 15'@6:20/km | 2x1km@3:57/km — recup 3'@5:30/km | RAC 10'@6:40/km",
     "km": 10,
     "dp": null,
     "note": ""
@@ -286,7 +286,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-12",
     "day": "Dim",
     "type": "EF",
-    "content": "Footing récup route 45'",
+    "content": "Ech 10'@6:20/km | Footing récup route 45'@5:30/km | RAC 10'@6:40/km",
     "km": 10,
     "dp": null,
     "note": ""
@@ -323,7 +323,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-15",
     "day": "Mer",
     "type": "TEMPO",
-    "content": "Éch: Éch. 15' footing progressif (6:00→5:00/km) | 4×200m strides route — activation vitesse, 20' | RAC 10' footing très lent + étirements dynamiques",
+    "content": "Ech 15'@6:20/km | 4x200m@3:57/km — recup 3'@5:30/km | RAC 10'@6:40/km",
     "km": 9,
     "dp": null,
     "note": ""
@@ -359,7 +359,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-18",
     "day": "Sam",
     "type": "RACE",
-    "content": "Éch: Éch. 15' footing lent + 3 accélérations progressives 100m | 🏁 5KM ROUTE — Objectif 18'00–19'00 · allure 3:36–3:48/km | RAC 10' marche active post-course",
+    "content": "Ech 15'@6:20/km + 3 accel 100m@3:36/km | 🏁 5KM ROUTE — Objectif 18'00–19'00 · allure 3:36–3:48/km@4:08/km | RAC 10' marche@6:40/km",
     "km": 8,
     "dp": null,
     "note": "🏁 COURSE",
@@ -397,7 +397,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-21",
     "day": "Mar",
     "type": "RENFO",
-    "content": "Éch: Activation 10' — cercles hanches, squats aériens, fentes latérales | Escalier + renfo complet — dernier renfo avant Backyard | Retour calme 8' — étirements statiques mollets, quadris, ischio, fessiers",
+    "content": "Activation 10' (cercles hanches, squats aeriens, fentes lat.) | Escalier + renfo complet — dernier renfo avant Backyard | RAC 8' etirements statiques (mollets, quadris, ischio, fessiers)",
     "km": null,
     "dp": null,
     "note": ""
@@ -520,7 +520,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-01",
     "day": "Ven",
     "type": "TEMPO",
-    "content": "Éch: Éch. 15' footing progressif (6:00→5:00/km) | 3×400m activation allure trail — 20' route | RAC 10' footing très lent + étirements dynamiques",
+    "content": "Ech 15'@6:20/km | 3x400m@3:57/km — recup 3'@5:30/km | RAC 10'@6:40/km",
     "km": 9,
     "dp": null,
     "note": ""
@@ -544,7 +544,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-03",
     "day": "Dim",
     "type": "RACE",
-    "content": "Éch: Éch. 15' footing lent + 3 accélérations progressives 100m | 🏔 TRAIL 11KM Garrigues — Objectif Top 30 · départ prudent si jambes lourdes | RAC 10' marche active post-course",
+    "content": "Ech 15'@6:20/km + 3 accel 100m@3:36/km | 🏔 TRAIL 11KM Garrigues — Objectif Top 30 · départ prudent si jambes lourdes@4:08/km | RAC 10' marche@6:40/km",
     "km": 14,
     "dp": 400,
     "note": "🏔 COURSE",
@@ -570,7 +570,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-05",
     "day": "Mar",
     "type": "RENFO",
-    "content": "Éch: Activation 10' — cercles hanches, squats aériens, fentes latérales | Escalier intensif + renfo jambes — préparer les quadris | Retour calme 8' — étirements statiques mollets, quadris, ischio, fessiers",
+    "content": "Activation 10' (cercles hanches, squats aeriens, fentes lat.) | Escalier intensif + renfo jambes — préparer les quadris | RAC 8' etirements statiques (mollets, quadris, ischio, fessiers)",
     "km": null,
     "dp": null,
     "note": ""
@@ -594,7 +594,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-07",
     "day": "Jeu",
     "type": "TRAIL",
-    "content": "Éch: Éch. 10' marche rapide + mobilité chevilles/hanches | 🌿 Trail Garrigue J1 — sortie longue EF, D+ progressif | RAC 10' marche progressive en descente + étirements mollets",
+    "content": "Ech 10' marche active@6:40/km | 🌿 Trail Garrigue J1 — sortie longue EF, D+ progressif@6:40/km — monter >8% en marche | RAC 10' marche@6:40/km",
     "km": 22,
     "dp": 1000,
     "note": "🌿 Trail Garrigue"
@@ -606,7 +606,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-08",
     "day": "Ven",
     "type": "TRAIL",
-    "content": "Éch: Éch. 10' marche rapide + mobilité chevilles/hanches | 🌿 Trail Garrigue J2 — technique montée/descente | RAC 10' marche progressive en descente + étirements mollets",
+    "content": "Ech 10' marche active@6:40/km | 🌿 Trail Garrigue J2 — technique montée/descente@6:40/km — monter >8% en marche | RAC 10' marche@6:40/km",
     "km": 20,
     "dp": 900,
     "note": ""
@@ -618,7 +618,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-09",
     "day": "Sam",
     "type": "TRAIL",
-    "content": "Éch: Éch. 10' marche rapide + mobilité chevilles/hanches | 🌿 Trail Garrigue J3 — sortie endurance, terrain varié | RAC 10' marche progressive en descente + étirements mollets",
+    "content": "Ech 10' marche active@6:40/km | 🌿 Trail Garrigue J3 — sortie endurance, terrain varié@6:40/km — monter >8% en marche | RAC 10' marche@6:40/km",
     "km": 18,
     "dp": 800,
     "note": ""
@@ -655,7 +655,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-12",
     "day": "Mar",
     "type": "VMA",
-    "content": "Éch: Éch. 15' footing lent + 4 strides 80m | 8×400m + 2×1km allure trail — route | RAC 10' footing lent + étirements mollets/quadris",
+    "content": "Ech 15'@6:20/km + 4 strides 80m@3:36/km | 8x400m@3:36/km — recup 2'@6:40/km | RAC 10'@6:40/km",
     "km": 14,
     "dp": null,
     "note": ""
@@ -667,7 +667,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-13",
     "day": "Mer",
     "type": "RENFO",
-    "content": "Éch: Activation 10' — cercles hanches, squats aériens, fentes latérales | Escalier + renfo excentrique — fentes bulgares, step-down | Retour calme 8' — étirements statiques mollets, quadris, ischio, fessiers",
+    "content": "Activation 10' (cercles hanches, squats aeriens, fentes lat.) | Escalier + renfo excentrique — fentes bulgares, step-down | RAC 8' etirements statiques (mollets, quadris, ischio, fessiers)",
     "km": null,
     "dp": null,
     "note": ""
@@ -679,7 +679,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-14",
     "day": "Jeu",
     "type": "EF",
-    "content": "Footing route 1h EF",
+    "content": "Ech 10'@6:20/km | Footing route 1h EF@5:30/km | RAC 10'@6:40/km",
     "km": 12,
     "dp": null,
     "note": ""
@@ -703,7 +703,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-16",
     "day": "Sam",
     "type": "TRAIL",
-    "content": "Éch: Éch. 10' marche rapide + mobilité chevilles/hanches | Sortie trail technique 2h — montée/descente Pic St Loup | RAC 10' marche progressive en descente + étirements mollets",
+    "content": "Ech 10' marche active@6:40/km | Sortie trail technique 2h — montée/descente Pic St Loup@6:40/km — monter >8% en marche | RAC 10' marche@6:40/km",
     "km": 20,
     "dp": 700,
     "note": ""
@@ -715,7 +715,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-17",
     "day": "Dim",
     "type": "EF",
-    "content": "Footing route récup 50'",
+    "content": "Ech 10'@6:20/km | Footing route récup 50'@5:30/km | RAC 10'@6:40/km",
     "km": 10,
     "dp": null,
     "note": ""
@@ -741,7 +741,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-19",
     "day": "Mar",
     "type": "VMA",
-    "content": "Éch: Éch. 15' footing lent + 4 strides 80m | 6×600m côte + récup descente route — pente 10% | RAC 10' footing lent + étirements mollets/quadris",
+    "content": "Ech 15'@6:20/km + 4 strides 80m@3:36/km | 6x600m@3:36/km — recup 2'@6:40/km | RAC 10'@6:40/km",
     "km": 14,
     "dp": 400,
     "note": ""
@@ -753,7 +753,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-20",
     "day": "Mer",
     "type": "RENFO",
-    "content": "Éch: Activation 10' — cercles hanches, squats aériens, fentes latérales | Escalier 20' + renfo complet 30' — nordic hamstring, step-down | Retour calme 8' — étirements statiques mollets, quadris, ischio, fessiers",
+    "content": "Activation 10' (cercles hanches, squats aeriens, fentes lat.) | Escalier 20' + renfo complet 30' — nordic hamstring, step-down | RAC 8' etirements statiques (mollets, quadris, ischio, fessiers)",
     "km": null,
     "dp": null,
     "note": ""
@@ -765,7 +765,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-21",
     "day": "Jeu",
     "type": "EF",
-    "content": "Footing route EF 1h15",
+    "content": "Ech 10'@6:20/km | Footing route EF 1h15@5:30/km | RAC 10'@6:40/km",
     "km": 14,
     "dp": null,
     "note": ""
@@ -789,7 +789,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-23",
     "day": "Sam",
     "type": "TRAIL",
-    "content": "Éch: Éch. 10' marche rapide + mobilité chevilles/hanches | Trail technique 2h30 — alternance marche rapide / run D+ | RAC 10' marche progressive en descente + étirements mollets",
+    "content": "Ech 10' marche active@6:40/km | Trail technique 2h30 — alternance marche rapide / run D+@6:40/km — monter >8% en marche | RAC 10' marche@6:40/km",
     "km": 22,
     "dp": 900,
     "note": ""
@@ -838,7 +838,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-27",
     "day": "Mer",
     "type": "RENFO",
-    "content": "Éch: Activation 10' — cercles hanches, squats aériens, fentes latérales | Escalier 15' + mobilité 20' — maintien, pas de fatigue | Retour calme 8' — étirements statiques mollets, quadris, ischio, fessiers",
+    "content": "Activation 10' (cercles hanches, squats aeriens, fentes lat.) | Escalier 15' + mobilité 20' — maintien, pas de fatigue | RAC 8' etirements statiques (mollets, quadris, ischio, fessiers)",
     "km": null,
     "dp": null,
     "note": ""
@@ -874,7 +874,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-30",
     "day": "Sam",
     "type": "WC",
-    "content": "Éch: Éch. 10' marche active avant départ + mobilité | ⛰️ WC Rando J1 — ~28km / 1700D+ — montées actives, bâtons | RAC 10' marche récup à l'arrivée + étirements",
+    "content": "Ech 10' marche@6:40/km | ⛰️ WC Rando J1 — ~28km / 1700D+ — montées actives, bâtons@6:40/km | RAC 10' marche@6:40/km",
     "km": 28,
     "dp": 1700,
     "note": "⛰️ WC Rando"
@@ -886,7 +886,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-31",
     "day": "Dim",
     "type": "WC",
-    "content": "Éch: Éch. 10' marche active avant départ + mobilité | ⛰️ WC Rando J2 — ~30km / 1800D+ — gestion fatigue, finir propre | RAC 10' marche récup à l'arrivée + étirements",
+    "content": "Ech 10' marche@6:40/km | ⛰️ WC Rando J2 — ~30km / 1800D+ — gestion fatigue, finir propre@6:40/km | RAC 10' marche@6:40/km",
     "km": 30,
     "dp": 1800,
     "note": ""
@@ -923,7 +923,7 @@ export const PLAN: Session[] = [
     "date": "2026-06-03",
     "day": "Mer",
     "type": "EF",
-    "content": "Footing route 50' + strides — relance appuis trail",
+    "content": "Ech 10'@6:20/km | Footing route 50' + strides — relance appuis trail@5:30/km | RAC 10'@6:40/km",
     "km": 10,
     "dp": null,
     "note": ""
@@ -959,7 +959,7 @@ export const PLAN: Session[] = [
     "date": "2026-06-06",
     "day": "Sam",
     "type": "TRAIL",
-    "content": "Éch: Éch. 10' marche rapide + mobilité chevilles/hanches | ⬇️ WC Trail 20km — travail descente, technique, relâché | RAC 10' marche progressive en descente + étirements mollets",
+    "content": "Ech 10' marche active@6:40/km | ⬇️ WC Trail 20km — travail descente, technique, relâché@6:40/km — monter >8% en marche | RAC 10' marche@6:40/km",
     "km": 20,
     "dp": 1000,
     "note": "⬇️ Dernier bloc"
@@ -971,7 +971,7 @@ export const PLAN: Session[] = [
     "date": "2026-06-07",
     "day": "Dim",
     "type": "TRAIL",
-    "content": "Éch: Éch. 10' marche rapide + mobilité chevilles/hanches | ⬇️ WC Trail 20km — descente + D+ — simulation fin de course | RAC 10' marche progressive en descente + étirements mollets",
+    "content": "Ech 10' marche active@6:40/km | ⬇️ WC Trail 20km — descente + D+ — simulation fin de course@6:40/km — monter >8% en marche | RAC 10' marche@6:40/km",
     "km": 20,
     "dp": 1000,
     "note": ""
@@ -1009,7 +1009,7 @@ export const PLAN: Session[] = [
     "date": "2026-06-10",
     "day": "Mer",
     "type": "TEMPO",
-    "content": "Éch: Éch. 15' footing progressif (6:00→5:00/km) | 2×1km allure trail race + 4 strides route — 25' total | RAC 10' footing très lent + étirements dynamiques",
+    "content": "Ech 15'@6:20/km | 2x1km@3:57/km — recup 3'@5:30/km | RAC 10'@6:40/km",
     "km": 11,
     "dp": null,
     "note": ""
@@ -1142,7 +1142,7 @@ export const PLAN: Session[] = [
     "date": "2026-06-21",
     "day": "Dim",
     "type": "RACE",
-    "content": "Éch: Éch. 15' footing lent + 3 accélérations progressives 100m | 🏆 76KM / 5000D+ — ALPES · EF montée · Descente relâchée · 200–250 cal/h | RAC 10' marche active post-course",
+    "content": "Ech 20'@6:20/km + 4 strides 100m | 🏆 76KM / 5000D+ — ALPES · EF montée · Descente relâchée · 200–250 cal/h@6:40/km | RAC 15' marche@6:40/km",
     "km": 79,
     "dp": 5000,
     "note": "🏆 OBJECTIF",

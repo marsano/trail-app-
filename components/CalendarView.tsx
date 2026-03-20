@@ -12,6 +12,7 @@ import {
 import type { Session } from '@/lib/plan-types'
 import type { ProgramId } from '@/lib/registry'
 import { useEffectivePlan } from '@/hooks/useEffectivePlan'
+import { getDisplayBlocks } from '@/lib/workout-blocks'
 import { resolveSessionDate } from '@/lib/plan-helpers'
 import { usePlanStore } from '@/lib/store'
 import { useProgramId } from '@/components/ProgramContext'
@@ -28,6 +29,19 @@ import { GripVertical } from 'lucide-react'
 const PREFIX_SESSION = 'session:'
 const PREFIX_DAY = 'day:'
 
+/** Aperçu texte (séance effective, y compris éditions locales). */
+function sessionCalendarPreview(session: Session): string {
+  const blocks = getDisplayBlocks(session)
+  const main = blocks.find((b) => b.type === 'intervals')
+  const text = (
+    main?.content?.trim() ||
+    session.content?.trim() ||
+    ''
+  ).replace(/\s+/g, ' ')
+  if (!text) return ''
+  return text.length > 52 ? `${text.slice(0, 52)}…` : text
+}
+
 function DraggableSession({ session }: { session: Session }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
@@ -40,27 +54,38 @@ function DraggableSession({ session }: { session: Session }) {
       }
     : undefined
 
+  const preview = sessionCalendarPreview(session)
+  const titleHint = preview || `${session.type}${session.km != null ? ` · ${session.km} km` : ''}`
+
   return (
     <div
       ref={setNodeRef}
       style={style}
       className={cn(
-        'mb-1 flex items-center gap-1 rounded border border-[var(--border)] bg-[var(--bg)] px-1 py-0.5 font-mono text-[10px] text-[var(--text)] sm:text-xs',
+        'mb-1 rounded border border-[var(--border)] bg-[var(--bg)] px-1 py-0.5 font-mono text-[10px] text-[var(--text)] sm:text-xs',
         isDragging && 'z-50 opacity-90 ring-1 ring-[var(--green)]'
       )}
+      title={titleHint}
     >
-      <button
-        type="button"
-        className="touch-none p-0.5 text-zinc-500 hover:text-[var(--text)]"
-        aria-label="Déplacer"
-        {...listeners}
-        {...attributes}
-      >
-        <GripVertical className="h-3 w-3 sm:h-4 sm:w-4" />
-      </button>
-      <TypeBadge type={session.type} className="!text-[9px] sm:!text-[10px]" />
-      {session.km != null ? (
-        <span className="text-zinc-500">{session.km}k</span>
+      <div className="flex items-center gap-1">
+        <button
+          type="button"
+          className="touch-none shrink-0 p-0.5 text-zinc-500 hover:text-[var(--text)]"
+          aria-label="Déplacer"
+          {...listeners}
+          {...attributes}
+        >
+          <GripVertical className="h-3 w-3 sm:h-4 sm:w-4" />
+        </button>
+        <TypeBadge type={session.type} className="!text-[9px] sm:!text-[10px]" />
+        {session.km != null ? (
+          <span className="shrink-0 text-zinc-500">{session.km}k</span>
+        ) : null}
+      </div>
+      {preview ? (
+        <p className="mt-0.5 line-clamp-2 pl-5 text-[9px] leading-tight text-zinc-500 sm:text-[10px]">
+          {preview}
+        </p>
       ) : null}
     </div>
   )

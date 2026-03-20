@@ -1,10 +1,20 @@
 'use client'
 
 import { useEffect, useState, type ReactNode } from 'react'
+import { usePlanStoreHydrated } from '@/hooks/usePlanStoreHydrated'
 
 export function ClientOnly({ children }: { children: ReactNode }) {
-  const [ready, setReady] = useState(false)
-  useEffect(() => setReady(true), [])
-  if (!ready) return null
+  const [mounted, setMounted] = useState(false)
+  const hydrated = usePlanStoreHydrated()
+
+  useEffect(() => setMounted(true), [])
+
+  if (!mounted || !hydrated) {
+    return (
+      <p className="font-mono text-sm text-zinc-500">
+        Chargement de tes données locales…
+      </p>
+    )
+  }
   return <>{children}</>
 }

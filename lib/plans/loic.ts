@@ -232,7 +232,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-07",
     "day": "Mar",
     "type": "VMA",
-    "content": "Ech 15'@6:35/km + 4 strides 80m@4:30/km | 6x3'@4:30/km — recup 2'@6:55/km | RAC 10'@6:55/km",
+    "content": "Ech 15'@5:45/km + 4 strides 80m@3:50/km | 6x3'@3:50/km — recup 2'@5:45/km | RAC 10'@5:45/km",
     "km": 12,
     "dp": null,
     "note": "Ne pas partir trop vite sur le 1er intervalle"
@@ -280,7 +280,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-11",
     "day": "Sam",
     "type": "TRAIL",
-    "content": "Ech 10' marche active@6:55/km | Trail technique 1h30 — alterné run/marche montée, focus descente relâchée@6:55/km — monter >8% en marche | RAC 10' marche@6:55/km",
+    "content": "Ech 10' marche active | Trail technique 1h30 — alterné run/marche montée, focus descente relâchée — monter >8% en marche | RAC 10' marche",
     "km": 15,
     "dp": 550,
     "note": "Travailler foulée descente — courte, sous le centre de gravité"
@@ -317,7 +317,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-14",
     "day": "Mar",
     "type": "TEMPO",
-    "content": "Ech 15'@6:35/km | 3x10'@4:57/km — recup 3'@5:45/km | RAC 10'@6:55/km",
+    "content": "Ech 15'@5:45/km | 3x10'@4:30/km — recup 3'@5:45/km | RAC 10'@5:45/km",
     "km": 13,
     "dp": null,
     "note": ""
@@ -367,7 +367,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-18",
     "day": "Sam",
     "type": "WC",
-    "content": "Ech 10' marche@6:55/km | 🏔 WC Avril J1 — Trail montagne 20–22km / 1200D+ — EF strict montée, marcher si >8%, bâtons ok@6:55/km | RAC 10' marche@6:55/km",
+    "content": "Ech 10' marche | 🏔 WC Avril J1 — Trail montagne 20–22km / 1200D+ — EF strict montée, marcher si >8%, bâtons ok | RAC 10' marche",
     "km": 21,
     "dp": 1200,
     "note": "Alimentation 1×/h dès le départ. EF strict.",
@@ -380,7 +380,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-19",
     "day": "Dim",
     "type": "WC",
-    "content": "Ech 10' marche@6:55/km | 🏔 WC Avril J2 — Trail 15–18km / 900D+ — même terrain, travail descente technique@6:55/km | RAC 10' marche@6:55/km",
+    "content": "Ech 10' marche | 🏔 WC Avril J2 — Trail 15–18km / 900D+ — même terrain, travail descente technique | RAC 10' marche",
     "km": 16,
     "dp": 900,
     "note": "Nutrition dès le matin. Récup active en descente."
@@ -453,7 +453,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-25",
     "day": "Sam",
     "type": "TRAIL",
-    "content": "Ech 10' marche active@6:55/km | Trail EF 1h30 — terrain mixte, reprise progressive post-WC@6:55/km — monter >8% en marche | RAC 10' marche@6:55/km",
+    "content": "Ech 10' marche active | Trail EF 1h30 — terrain mixte, reprise progressive post-WC — monter >8% en marche | RAC 10' marche",
     "km": 15,
     "dp": 500,
     "note": ""
@@ -490,7 +490,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-28",
     "day": "Mar",
     "type": "VMA",
-    "content": "Ech 15'@6:35/km + 4 strides 80m@4:30/km | 8x2'@4:30/km — recup 1'30''@6:55/km | RAC 10'@6:55/km",
+    "content": "Ech 15'@5:45/km + 4 strides 80m@3:50/km | 8x2'@3:50/km — recup 1'30''@5:45/km | RAC 10'@5:45/km",
     "km": 13,
     "dp": null,
     "note": "Conserver la même allure sur tous les intervals"
@@ -538,7 +538,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-02",
     "day": "Sam",
     "type": "TRAIL",
-    "content": "Ech 10' marche active@6:55/km | Trail long 2h — sortie longue EF, simuler effort course : marche montée / run plat-descente@6:55/km — monter >8% en marche | RAC 10' marche@6:55/km",
+    "content": "Ech 10' marche active | Trail long 2h — sortie longue EF, simuler effort course : marche montée / run plat-descente — monter >8% en marche | RAC 10' marche",
     "km": 19,
     "dp": 700,
     "note": "Alimentation toutes les 45min."
@@ -576,7 +576,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-05",
     "day": "Mar",
     "type": "TEMPO",
-    "content": "Ech 15'@6:35/km | 4x6'@4:57/km — recup 3'@5:45/km | RAC 10'@6:55/km",
+    "content": "Ech 15'@5:45/km | 4x6'@4:30/km — recup 3'@5:45/km | RAC 10'@5:45/km",
     "km": 13,
     "dp": null,
     "note": "Trouver une côte à 4–6% sur route"
@@ -624,7 +624,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-09",
     "day": "Sam",
     "type": "TRAIL",
-    "content": "Ech 10' marche active@6:55/km | Trail montagne 2h — D+ progressif, simulation allure course 5:30–6:00/km GAP@6:55/km — monter >8% en marche | RAC 10' marche@6:55/km",
+    "content": "Ech 10' marche active | Trail montagne 2h — D+ progressif, simulation allure course 5:30–6:00/km GAP — monter >8% en marche | RAC 10' marche",
     "km": 18,
     "dp": 900,
     "note": "GAP = pace ajusté au dénivelé. Monter à allure effort stable."
@@ -661,7 +661,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-12",
     "day": "Mar",
     "type": "VMA",
-    "content": "Ech 15'@6:35/km + 4 strides 80m@4:30/km | 5x4'@4:30/km — recup 2'@6:55/km | RAC 10'@6:55/km",
+    "content": "Ech 15'@5:45/km + 4 strides 80m@3:50/km | 5x4'@3:50/km — recup 2'@5:45/km | RAC 10'@5:45/km",
     "km": 13,
     "dp": null,
     "note": ""
@@ -710,7 +710,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-16",
     "day": "Sam",
     "type": "WC",
-    "content": "Ech 10' marche@6:55/km | 🏔 WC Mai J1 — Trail montagne 22–24km / 1400D+ — simulation course : départ contrôlé, allure EF montée, descente technique@6:55/km | RAC 10' marche@6:55/km",
+    "content": "Ech 10' marche | 🏔 WC Mai J1 — Trail montagne 22–24km / 1400D+ — simulation course : départ contrôlé, allure EF montée, descente technique | RAC 10' marche",
     "km": 23,
     "dp": 1400,
     "note": "Objectif : tenir allure identique début et fin. Gel toutes les 45min.",
@@ -723,7 +723,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-17",
     "day": "Dim",
     "type": "WC",
-    "content": "Ech 10' marche@6:55/km | 🏔 WC Mai J2 — Trail 14–16km / 800D+ — récup terrain, travail descente longue@6:55/km | RAC 10' marche@6:55/km",
+    "content": "Ech 10' marche | 🏔 WC Mai J2 — Trail 14–16km / 800D+ — récup terrain, travail descente longue | RAC 10' marche",
     "km": 15,
     "dp": 800,
     "note": ""
@@ -1005,7 +1005,7 @@ export const PLAN: Session[] = [
     "date": "2026-06-09",
     "day": "Mar",
     "type": "TEMPO",
-    "content": "Ech 15'@6:35/km | 2x15'@4:57/km — recup 4'@5:45/km | RAC 10'@6:55/km",
+    "content": "Ech 15'@5:45/km | 2x15'@4:30/km — recup 4'@5:45/km | RAC 10'@5:45/km",
     "km": 14,
     "dp": null,
     "note": ""
@@ -1054,7 +1054,7 @@ export const PLAN: Session[] = [
     "date": "2026-06-13",
     "day": "Sam",
     "type": "WC",
-    "content": "Ech 10' marche@6:55/km | 🏔 WC Juin J1 — Trail 18–20km / 1100D+ — simulation race day : ravito, nutrition, équipement course@6:55/km | RAC 10' marche@6:55/km",
+    "content": "Ech 10' marche | 🏔 WC Juin J1 — Trail 18–20km / 1100D+ — simulation race day : ravito, nutrition, équipement course | RAC 10' marche",
     "km": 19,
     "dp": 1100,
     "note": "Tester équipement et chaussures de course. Alimentation identique à J-course.",
@@ -1067,7 +1067,7 @@ export const PLAN: Session[] = [
     "date": "2026-06-14",
     "day": "Dim",
     "type": "EF",
-    "content": "Ech 10'@6:35/km | Trail récup 1h — terrain facile, EF strict, évaluation sensations@5:45/km | RAC 10'@6:55/km",
+    "content": "Ech 10'@5:45/km | Trail récup 1h — terrain facile, EF strict, évaluation sensations@5:45/km | RAC 10'@5:45/km",
     "km": 10,
     "dp": 300,
     "note": ""
@@ -1153,7 +1153,7 @@ export const PLAN: Session[] = [
     "date": "2026-06-21",
     "day": "Dim",
     "type": "RACE",
-    "content": "Ech 20'@6:35/km + 4 strides 100m | 🏆 COURSE 33km / 2130D+ — Départ contrôlé 1ers 5km, marcher montées >10%, gérer ravitos, accélérer si possible dernier 5km@6:55/km | RAC 15' marche@6:55/km",
+    "content": "Ech 20'@5:45/km + 4 strides 100m | 🏆 COURSE 33km / 2130D+ — Départ contrôlé 1ers 5km, marcher montées >10%, gérer ravitos, accélérer si possible dernier 5km@5:45/km | RAC 15' marche@5:45/km",
     "km": 36,
     "dp": 2130,
     "note": "🏆 OBJECTIF — allure cible 6:30–7:00/km GAP. Gel toutes les 45min.",

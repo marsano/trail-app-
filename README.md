@@ -16,7 +16,7 @@ Ouvre [http://localhost:3000](http://localhost:3000) : page d’accueil avec le 
 - **Édition** : chaque séance peut être modifiée (contenu, km, D+, type…) ou retirée du plan localement ; les courses ne sont plus verrouillées dans le calendrier.
 - **Structure Garmin** : les séances sont découpées en **3 blocs** (échauffement, intervalles, récupération) avec **allure cible** chacun ; la description structurée est envoyée à Garmin Connect. Sans `blocks` dans le JSON du plan, le texte `content` est **découpé automatiquement** sur les séparateurs `|` (échauffement, cœur, RAC / retour).
 - **Volume** : chaque carte affiche **km / D+** indicatifs et une **durée estimée** (≈) à partir des durées dans le texte (35', 1h30, séries…), avec repli sur km × min/km si peu de signal temporel.
-- **Mise à jour des plans** : `node scripts/sync-plans-from-downloads.mjs` régénère `lib/plans/loic.ts` et `matthieu.ts` depuis les fichiers `plan-*-corrige (2).js` du dossier Téléchargements (adapter les chemins dans le script si besoin).
+- **Mise à jour des plans** : `node scripts/sync-plans-from-downloads.mjs` régénère `lib/plans/loic.ts` et `matthieu.ts` depuis les fichiers `plan-*-corrige (3).js` du dossier Téléchargements (adapter les chemins dans le script si besoin).
 
 ### Garmin Connect
 

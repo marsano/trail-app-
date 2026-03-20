@@ -141,7 +141,7 @@ export const PLAN: Session[] = [
     "date": "2026-03-31",
     "day": "Mar",
     "type": "VMA",
-    "content": "Ech 15'@6:20/km + 4 strides 80m@3:36/km | 10x400m@3:36/km — recup 1'@6:40/km | RAC 10'@6:40/km",
+    "content": "Ech 15'@5:30/km + 4 strides 80m@3:30/km | 10x400m@3:30/km — recup 1'@5:30/km | RAC 10'@5:30/km",
     "km": 12,
     "dp": null,
     "note": ""
@@ -165,7 +165,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-02",
     "day": "Jeu",
     "type": "EF",
-    "content": "Ech 10'@6:20/km | Footing récup route 50'@5:30/km | RAC 10'@6:40/km",
+    "content": "Ech 10'@5:30/km | Footing récup route 50'@5:30/km | RAC 10'@5:30/km",
     "km": 10,
     "dp": null,
     "note": ""
@@ -189,7 +189,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-04",
     "day": "Sam",
     "type": "TEMPO",
-    "content": "Ech 15'@6:20/km | 3x2km@3:57/km — recup 2'@5:30/km | RAC 10'@6:40/km",
+    "content": "Ech 15'@5:30/km | 3x2km@4:10/km — recup 2'@5:30/km | RAC 10'@5:30/km",
     "km": 16,
     "dp": null,
     "note": ""
@@ -226,7 +226,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-07",
     "day": "Mar",
     "type": "VMA",
-    "content": "Ech 15'@6:20/km + 4 strides 80m@3:36/km | 6x600m@3:36/km — recup 2'@6:40/km | RAC 10'@6:40/km",
+    "content": "Ech 15'@5:30/km + 4 strides 80m@3:30/km | 6x600m@3:30/km — recup 2'@5:30/km | RAC 10'@5:30/km",
     "km": 12,
     "dp": null,
     "note": ""
@@ -274,7 +274,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-11",
     "day": "Sam",
     "type": "TEMPO",
-    "content": "Ech 15'@6:20/km | 2x1km@3:57/km — recup 3'@5:30/km | RAC 10'@6:40/km",
+    "content": "Ech 15'@5:30/km | 2x1km@4:10/km — recup 3'@5:30/km | RAC 10'@5:30/km",
     "km": 10,
     "dp": null,
     "note": ""
@@ -286,7 +286,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-12",
     "day": "Dim",
     "type": "EF",
-    "content": "Ech 10'@6:20/km | Footing récup route 45'@5:30/km | RAC 10'@6:40/km",
+    "content": "Ech 10'@5:30/km | Footing récup route 45'@5:30/km | RAC 10'@5:30/km",
     "km": 10,
     "dp": null,
     "note": ""
@@ -323,7 +323,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-15",
     "day": "Mer",
     "type": "TEMPO",
-    "content": "Ech 15'@6:20/km | 4x200m@3:57/km — recup 3'@5:30/km | RAC 10'@6:40/km",
+    "content": "Ech 15'@5:30/km | 4x200m@4:10/km — recup 3'@5:30/km | RAC 10'@5:30/km",
     "km": 9,
     "dp": null,
     "note": ""
@@ -359,7 +359,7 @@ export const PLAN: Session[] = [
     "date": "2026-04-18",
     "day": "Sam",
     "type": "RACE",
-    "content": "Ech 15'@6:20/km + 3 accel 100m@3:36/km | 🏁 5KM ROUTE — Objectif 18'00–19'00 · allure 3:36–3:48/km@4:08/km | RAC 10' marche@6:40/km",
+    "content": "Ech 15'@5:30/km + 3 accel 100m@3:30/km | 🏁 5KM ROUTE — Objectif 18'00–19'00 · allure 3:30–3:36/km@4:00/km | RAC 10' marche@5:30/km",
     "km": 8,
     "dp": null,
     "note": "🏁 COURSE",
@@ -520,7 +520,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-01",
     "day": "Ven",
     "type": "TEMPO",
-    "content": "Ech 15'@6:20/km | 3x400m@3:57/km — recup 3'@5:30/km | RAC 10'@6:40/km",
+    "content": "Ech 15'@5:30/km | 3x400m@4:10/km — recup 3'@5:30/km | RAC 10'@5:30/km",
     "km": 9,
     "dp": null,
     "note": ""
@@ -544,7 +544,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-03",
     "day": "Dim",
     "type": "RACE",
-    "content": "Ech 15'@6:20/km + 3 accel 100m@3:36/km | 🏔 TRAIL 11KM Garrigues — Objectif Top 30 · départ prudent si jambes lourdes@4:08/km | RAC 10' marche@6:40/km",
+    "content": "Ech 15'@5:30/km + 3 accel 100m@3:30/km | 🏔 TRAIL 11KM Garrigues — Objectif Top 30 · départ prudent si jambes lourdes@4:00/km | RAC 10' marche@5:30/km",
     "km": 14,
     "dp": 400,
     "note": "🏔 COURSE",
@@ -594,7 +594,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-07",
     "day": "Jeu",
     "type": "TRAIL",
-    "content": "Ech 10' marche active@6:40/km | 🌿 Trail Garrigue J1 — sortie longue EF, D+ progressif@6:40/km — monter >8% en marche | RAC 10' marche@6:40/km",
+    "content": "Ech 10' marche active | 🌿 Trail Garrigue J1 — sortie longue EF, D+ progressif — monter >8% en marche | RAC 10' marche",
     "km": 22,
     "dp": 1000,
     "note": "🌿 Trail Garrigue"
@@ -606,7 +606,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-08",
     "day": "Ven",
     "type": "TRAIL",
-    "content": "Ech 10' marche active@6:40/km | 🌿 Trail Garrigue J2 — technique montée/descente@6:40/km — monter >8% en marche | RAC 10' marche@6:40/km",
+    "content": "Ech 10' marche active | 🌿 Trail Garrigue J2 — technique montée/descente — monter >8% en marche | RAC 10' marche",
     "km": 20,
     "dp": 900,
     "note": ""
@@ -618,7 +618,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-09",
     "day": "Sam",
     "type": "TRAIL",
-    "content": "Ech 10' marche active@6:40/km | 🌿 Trail Garrigue J3 — sortie endurance, terrain varié@6:40/km — monter >8% en marche | RAC 10' marche@6:40/km",
+    "content": "Ech 10' marche active | 🌿 Trail Garrigue J3 — sortie endurance, terrain varié — monter >8% en marche | RAC 10' marche",
     "km": 18,
     "dp": 800,
     "note": ""
@@ -655,7 +655,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-12",
     "day": "Mar",
     "type": "VMA",
-    "content": "Ech 15'@6:20/km + 4 strides 80m@3:36/km | 8x400m@3:36/km — recup 2'@6:40/km | RAC 10'@6:40/km",
+    "content": "Ech 15'@5:30/km + 4 strides 80m@3:30/km | 8x400m@3:30/km — recup 2'@5:30/km | RAC 10'@5:30/km",
     "km": 14,
     "dp": null,
     "note": ""
@@ -679,7 +679,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-14",
     "day": "Jeu",
     "type": "EF",
-    "content": "Ech 10'@6:20/km | Footing route 1h EF@5:30/km | RAC 10'@6:40/km",
+    "content": "Ech 10'@5:30/km | Footing route 1h EF@5:30/km | RAC 10'@5:30/km",
     "km": 12,
     "dp": null,
     "note": ""
@@ -703,7 +703,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-16",
     "day": "Sam",
     "type": "TRAIL",
-    "content": "Ech 10' marche active@6:40/km | Sortie trail technique 2h — montée/descente Pic St Loup@6:40/km — monter >8% en marche | RAC 10' marche@6:40/km",
+    "content": "Ech 10' marche active | Sortie trail technique 2h — montée/descente Pic St Loup — monter >8% en marche | RAC 10' marche",
     "km": 20,
     "dp": 700,
     "note": ""
@@ -715,7 +715,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-17",
     "day": "Dim",
     "type": "EF",
-    "content": "Ech 10'@6:20/km | Footing route récup 50'@5:30/km | RAC 10'@6:40/km",
+    "content": "Ech 10'@5:30/km | Footing route récup 50'@5:30/km | RAC 10'@5:30/km",
     "km": 10,
     "dp": null,
     "note": ""
@@ -741,7 +741,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-19",
     "day": "Mar",
     "type": "VMA",
-    "content": "Ech 15'@6:20/km + 4 strides 80m@3:36/km | 6x600m@3:36/km — recup 2'@6:40/km | RAC 10'@6:40/km",
+    "content": "Ech 15'@5:30/km + 4 strides 80m@3:30/km | 6x600m@3:30/km — recup 2'@5:30/km | RAC 10'@5:30/km",
     "km": 14,
     "dp": 400,
     "note": ""
@@ -765,7 +765,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-21",
     "day": "Jeu",
     "type": "EF",
-    "content": "Ech 10'@6:20/km | Footing route EF 1h15@5:30/km | RAC 10'@6:40/km",
+    "content": "Ech 10'@5:30/km | Footing route EF 1h15@5:30/km | RAC 10'@5:30/km",
     "km": 14,
     "dp": null,
     "note": ""
@@ -789,7 +789,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-23",
     "day": "Sam",
     "type": "TRAIL",
-    "content": "Ech 10' marche active@6:40/km | Trail technique 2h30 — alternance marche rapide / run D+@6:40/km — monter >8% en marche | RAC 10' marche@6:40/km",
+    "content": "Ech 10' marche active | Trail technique 2h30 — alternance marche rapide / run D+ — monter >8% en marche | RAC 10' marche",
     "km": 22,
     "dp": 900,
     "note": ""
@@ -874,7 +874,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-30",
     "day": "Sam",
     "type": "WC",
-    "content": "Ech 10' marche@6:40/km | ⛰️ WC Rando J1 — ~28km / 1700D+ — montées actives, bâtons@6:40/km | RAC 10' marche@6:40/km",
+    "content": "Ech 10' marche | ⛰️ WC Rando J1 — ~28km / 1700D+ — montées actives, bâtons | RAC 10' marche",
     "km": 28,
     "dp": 1700,
     "note": "⛰️ WC Rando"
@@ -886,7 +886,7 @@ export const PLAN: Session[] = [
     "date": "2026-05-31",
     "day": "Dim",
     "type": "WC",
-    "content": "Ech 10' marche@6:40/km | ⛰️ WC Rando J2 — ~30km / 1800D+ — gestion fatigue, finir propre@6:40/km | RAC 10' marche@6:40/km",
+    "content": "Ech 10' marche | ⛰️ WC Rando J2 — ~30km / 1800D+ — gestion fatigue, finir propre | RAC 10' marche",
     "km": 30,
     "dp": 1800,
     "note": ""
@@ -923,7 +923,7 @@ export const PLAN: Session[] = [
     "date": "2026-06-03",
     "day": "Mer",
     "type": "EF",
-    "content": "Ech 10'@6:20/km | Footing route 50' + strides — relance appuis trail@5:30/km | RAC 10'@6:40/km",
+    "content": "Ech 10'@5:30/km | Footing route 50' + strides — relance appuis trail@5:30/km | RAC 10'@5:30/km",
     "km": 10,
     "dp": null,
     "note": ""
@@ -959,7 +959,7 @@ export const PLAN: Session[] = [
     "date": "2026-06-06",
     "day": "Sam",
     "type": "TRAIL",
-    "content": "Ech 10' marche active@6:40/km | ⬇️ WC Trail 20km — travail descente, technique, relâché@6:40/km — monter >8% en marche | RAC 10' marche@6:40/km",
+    "content": "Ech 10' marche active | ⬇️ WC Trail 20km — travail descente, technique, relâché — monter >8% en marche | RAC 10' marche",
     "km": 20,
     "dp": 1000,
     "note": "⬇️ Dernier bloc"
@@ -971,7 +971,7 @@ export const PLAN: Session[] = [
     "date": "2026-06-07",
     "day": "Dim",
     "type": "TRAIL",
-    "content": "Ech 10' marche active@6:40/km | ⬇️ WC Trail 20km — descente + D+ — simulation fin de course@6:40/km — monter >8% en marche | RAC 10' marche@6:40/km",
+    "content": "Ech 10' marche active | ⬇️ WC Trail 20km — descente + D+ — simulation fin de course — monter >8% en marche | RAC 10' marche",
     "km": 20,
     "dp": 1000,
     "note": ""
@@ -1009,7 +1009,7 @@ export const PLAN: Session[] = [
     "date": "2026-06-10",
     "day": "Mer",
     "type": "TEMPO",
-    "content": "Ech 15'@6:20/km | 2x1km@3:57/km — recup 3'@5:30/km | RAC 10'@6:40/km",
+    "content": "Ech 15'@5:30/km | 2x1km@4:10/km — recup 3'@5:30/km | RAC 10'@5:30/km",
     "km": 11,
     "dp": null,
     "note": ""
@@ -1142,7 +1142,7 @@ export const PLAN: Session[] = [
     "date": "2026-06-21",
     "day": "Dim",
     "type": "RACE",
-    "content": "Ech 20'@6:20/km + 4 strides 100m | 🏆 76KM / 5000D+ — ALPES · EF montée · Descente relâchée · 200–250 cal/h@6:40/km | RAC 15' marche@6:40/km",
+    "content": "Ech 20'@5:30/km + 4 strides 100m | 🏆 76KM / 5000D+ — ALPES · EF montée · Descente relâchée · 200–250 cal/h@5:30/km | RAC 15' marche@5:30/km",
     "km": 79,
     "dp": 5000,
     "note": "🏆 OBJECTIF",

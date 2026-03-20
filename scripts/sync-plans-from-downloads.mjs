@@ -1,6 +1,6 @@
 /**
  * Régénère lib/plans/loic.ts et lib/plans/matthieu.ts depuis les exports
- * des fichiers plan-*-corrige (2).js dans Téléchargements.
+ * des fichiers plan-*-corrige (3).js dans Téléchargements.
  *
  * Usage: node scripts/sync-plans-from-downloads.mjs
  */
@@ -8,8 +8,8 @@ import { writeFileSync } from 'fs'
 import { pathToFileURL } from 'url'
 
 const ROOT = '/Users/matthieu/Documents/trail-plan'
-const LOIC_SRC = '/Users/matthieu/Downloads/plan-loic-corrige (2).js'
-const MAT_SRC = '/Users/matthieu/Downloads/plan-matthieu-corrige (2).js'
+const LOIC_SRC = '/Users/matthieu/Downloads/plan-loic-corrige (3).js'
+const MAT_SRC = '/Users/matthieu/Downloads/plan-matthieu-corrige (3).js'
 
 function emitFile(name, mod) {
   const body = `import type { PlanEvent, RaceInfo, Session } from '../plan-types'

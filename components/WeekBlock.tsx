@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { SessionCard } from '@/components/SessionCard'
-import type { Session } from '@/lib/plan'
+import type { Session } from '@/lib/plan-types'
 import { resolveSessionDate } from '@/lib/plan-helpers'
 import { cn } from '@/lib/utils'
 

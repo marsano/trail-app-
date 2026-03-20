@@ -6,8 +6,9 @@ import { Button } from '@/components/ui/button'
 import { TypeBadge } from '@/components/TypeBadge'
 import { FeedbackPanel } from '@/components/FeedbackPanel'
 import { usePlanStore, getSessionState } from '@/lib/store'
-import type { Session } from '@/lib/plan'
+import type { Session } from '@/lib/plan-types'
 import { resolveSessionDate, todayISO } from '@/lib/plan-helpers'
+import { useProgramId } from '@/components/ProgramContext'
 import { MessageSquare, Watch, CheckCircle2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -18,8 +19,11 @@ export function SessionCard({
   session: Session
   dateOverrides: Record<string, string>
 }) {
+  const programId = useProgramId()
   const [feedbackOpen, setFeedbackOpen] = useState(false)
-  const sessionStates = usePlanStore((s) => s.sessionStates)
+  const sessionStates = usePlanStore(
+    (s) => s.programs[programId]?.sessionStates ?? {}
+  )
   const toggleDone = usePlanStore((s) => s.toggleDone)
   const st = getSessionState(sessionStates, session.id)
   const effectiveDate = resolveSessionDate(session, dateOverrides)
@@ -47,7 +51,7 @@ export function SessionCard({
           <div className="flex shrink-0 items-start pt-0.5">
             <Checkbox
               checked={st.done}
-              onCheckedChange={() => toggleDone(session.id)}
+              onCheckedChange={() => toggleDone(programId, session.id)}
               aria-label="Séance réalisée"
               className="mt-0.5"
             />

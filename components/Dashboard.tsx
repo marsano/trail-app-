@@ -12,9 +12,11 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { PLAN, RACE_INFO, EVENTS, type SessionType } from '@/lib/plan'
+import type { Session, SessionType } from '@/lib/plan-types'
+import { getProgramBundle } from '@/lib/registry'
 import { usePlanStore, getSessionState, type SessionState } from '@/lib/store'
 import { resolveSessionDate, daysBetween, todayISO } from '@/lib/plan-helpers'
+import { useProgramId } from '@/components/ProgramContext'
 const TYPE_ORDER: SessionType[] = [
   'EF',
   'VMA',
@@ -40,6 +42,7 @@ const PIE_COLORS: Record<SessionType, string> = {
 }
 
 function trainingStreak(
+  plan: Session[],
   sessionStates: Record<string, SessionState>,
   overrides: Record<string, string>
 ): number {
@@ -49,7 +52,7 @@ function trainingStreak(
     const d = new Date(start)
     d.setDate(d.getDate() - i)
     const iso = d.toISOString().slice(0, 10)
-    const onDay = PLAN.filter((s) => resolveSessionDate(s, overrides) === iso)
+    const onDay = plan.filter((s) => resolveSessionDate(s, overrides) === iso)
     const anyDone = onDay.some((s) => sessionStates[s.id]?.done)
     if (anyDone) streak++
     else break
@@ -82,16 +85,22 @@ function StatCard({
 }
 
 export function Dashboard() {
-  const sessionStates = usePlanStore((s) => s.sessionStates)
-  const dateOverrides = usePlanStore((s) => s.dateOverrides)
+  const programId = useProgramId()
+  const sessionStates = usePlanStore(
+    (s) => s.programs[programId]?.sessionStates ?? {}
+  )
+  const dateOverrides = usePlanStore(
+    (s) => s.programs[programId]?.dateOverrides ?? {}
+  )
 
   const stats = useMemo(() => {
+    const { plan, raceInfo, events } = getProgramBundle(programId)
     const today = todayISO()
-    const daysToRace = daysBetween(today, RACE_INFO.date)
+    const daysToRace = daysBetween(today, raceInfo.date)
     let doneCount = 0
     let kmSum = 0
     let dpSum = 0
-    for (const s of PLAN) {
+    for (const s of plan) {
       const st = getSessionState(sessionStates, s.id)
       if (!st.done) continue
       doneCount++
@@ -101,7 +110,7 @@ export function Dashboard() {
 
     const weekKm = new Map<string, { label: string; km: number }>()
     const weekOrder: string[] = []
-    for (const s of PLAN) {
+    for (const s of plan) {
       const key = `${s.phase}-${s.week}`
       if (!weekOrder.includes(key)) weekOrder.push(key)
       if (!getSessionState(sessionStates, s.id).done || s.km == null) continue
@@ -117,7 +126,7 @@ export function Dashboard() {
 
     const typeCount = new Map<SessionType, number>()
     for (const t of TYPE_ORDER) typeCount.set(t, 0)
-    for (const s of PLAN) {
+    for (const s of plan) {
       if (!getSessionState(sessionStates, s.id).done) continue
       typeCount.set(s.type, (typeCount.get(s.type) ?? 0) + 1)
     }
@@ -126,9 +135,11 @@ export function Dashboard() {
       count: typeCount.get(type) ?? 0,
     })).filter((d) => d.count > 0)
 
-    const streak = trainingStreak(sessionStates, dateOverrides)
+    const streak = trainingStreak(plan, sessionStates, dateOverrides)
 
     return {
+      raceInfo,
+      events,
       daysToRace,
       doneCount,
       kmSum,
@@ -137,7 +148,7 @@ export function Dashboard() {
       pieData,
       streak,
     }
-  }, [sessionStates, dateOverrides])
+  }, [programId, sessionStates, dateOverrides])
 
   return (
     <div className="space-y-10">
@@ -145,7 +156,7 @@ export function Dashboard() {
         <StatCard
           label="Jours avant la course"
           value={stats.daysToRace >= 0 ? stats.daysToRace : 0}
-          sub={RACE_INFO.date}
+          sub={stats.raceInfo.date}
         />
         <StatCard label="Séances réalisées" value={stats.doneCount} />
         <StatCard
@@ -173,7 +184,7 @@ export function Dashboard() {
           Prochains événements
         </h3>
         <ul className="space-y-2">
-          {EVENTS.map((ev) => {
+          {stats.events.map((ev) => {
             const j = daysBetween(todayISO(), ev.date)
             return (
               <li

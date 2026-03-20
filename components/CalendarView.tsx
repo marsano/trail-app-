@@ -9,9 +9,12 @@ import {
   useDroppable,
   type DragEndEvent,
 } from '@dnd-kit/core'
-import { PLAN, type Session } from '@/lib/plan'
+import type { Session } from '@/lib/plan-types'
+import type { ProgramId } from '@/lib/registry'
+import { getProgramBundle } from '@/lib/registry'
 import { resolveSessionDate } from '@/lib/plan-helpers'
 import { usePlanStore } from '@/lib/store'
+import { useProgramId } from '@/components/ProgramContext'
 import { TypeBadge } from '@/components/TypeBadge'
 import { Button } from '@/components/ui/button'
 import {
@@ -74,10 +77,12 @@ function DraggableSession({
 }
 
 function DroppableDay({
+  programId,
   dateStr,
   sessions,
   dateOverrides,
 }: {
+  programId: ProgramId
   dateStr: string
   sessions: Session[]
   dateOverrides: Record<string, string>
@@ -110,7 +115,7 @@ function DroppableDay({
                   variant="link"
                   size="sm"
                   className="h-auto px-0 py-0 font-mono text-[9px]"
-                  onClick={() => resetSessionDate(s.id)}
+                  onClick={() => resetSessionDate(programId, s.id)}
                 >
                   Réinit. ({original})
                 </Button>
@@ -124,14 +129,19 @@ function DroppableDay({
 }
 
 function sessionsForDay(
+  plan: Session[],
   dateStr: string,
   overrides: Record<string, string>
 ): Session[] {
-  return PLAN.filter((s) => resolveSessionDate(s, overrides) === dateStr)
+  return plan.filter((s) => resolveSessionDate(s, overrides) === dateStr)
 }
 
 export function CalendarView() {
-  const dateOverrides = usePlanStore((s) => s.dateOverrides)
+  const programId = useProgramId()
+  const plan = getProgramBundle(programId).plan
+  const dateOverrides = usePlanStore(
+    (s) => s.programs[programId]?.dateOverrides ?? {}
+  )
   const moveSession = usePlanStore((s) => s.moveSession)
 
   const sensors = useSensors(
@@ -146,10 +156,10 @@ export function CalendarView() {
     if (!aid.startsWith(PREFIX_SESSION) || !oid.startsWith(PREFIX_DAY)) return
     const sessionId = aid.slice(PREFIX_SESSION.length)
     const newDate = oid.slice(PREFIX_DAY.length)
-    const session = PLAN.find((s) => s.id === sessionId)
+    const session = plan.find((s) => s.id === sessionId)
     if (!session) return
     if (session.type === 'RACE' || session.isEvent) return
-    moveSession(sessionId, newDate)
+    moveSession(programId, sessionId, newDate)
   }
 
   return (
@@ -178,8 +188,10 @@ export function CalendarView() {
                         cell.dateStr ? (
                           <DroppableDay
                             key={`${cell.dateStr}-${ri}-${ci}`}
+                            programId={programId}
                             dateStr={cell.dateStr}
                             sessions={sessionsForDay(
+                              plan,
                               cell.dateStr,
                               dateOverrides
                             )}

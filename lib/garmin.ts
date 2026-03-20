@@ -1,4 +1,4 @@
-import type { Session, SessionType } from '@/lib/plan'
+import type { Session, SessionType } from '@/lib/plan-types'
 
 const sportMap: Record<SessionType, string | null> = {
   EF: 'running',

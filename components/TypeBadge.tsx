@@ -1,4 +1,4 @@
-import type { SessionType } from '@/lib/plan'
+import type { SessionType } from '@/lib/plan-types'
 import { cn } from '@/lib/utils'
 
 const STYLES: Record<SessionType, string> = {

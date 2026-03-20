@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 import { Syne, DM_Mono } from 'next/font/google'
 import './globals.css'
-import { AppNav } from '@/components/AppNav'
-import { GarminSyncModal } from '@/components/GarminSyncModal'
 
 const syne = Syne({
   subsets: ['latin'],
@@ -19,8 +17,8 @@ const dmMono = DM_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Trail Plan — 76km / 5000D+',
-  description: 'Suivi d’entraînement trail — plan, calendrier, Garmin',
+  title: 'Trail Plan',
+  description: 'Suivi d’entraînement trail — plusieurs programmes',
 }
 
 export default function RootLayout({
@@ -33,9 +31,7 @@ export default function RootLayout({
       <body
         className={`${syne.variable} ${dmMono.variable} min-h-screen bg-[var(--bg)] font-sans antialiased`}
       >
-        <AppNav />
-        <main className="mx-auto max-w-5xl px-4 py-6 sm:py-10">{children}</main>
-        <GarminSyncModal />
+        {children}
       </body>
     </html>
   )

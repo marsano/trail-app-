@@ -4,9 +4,13 @@ import { usePlanStore } from '@/lib/store'
 import type { PhaseWeekGroup } from '@/lib/plan-helpers'
 import { PhaseHeader } from '@/components/PhaseHeader'
 import { WeekBlock } from '@/components/WeekBlock'
+import { useProgramId } from '@/components/ProgramContext'
 
 export function PlanPageClient({ grouped }: { grouped: PhaseWeekGroup[] }) {
-  const dateOverrides = usePlanStore((s) => s.dateOverrides)
+  const programId = useProgramId()
+  const dateOverrides = usePlanStore(
+    (s) => s.programs[programId]?.dateOverrides ?? {}
+  )
 
   return (
     <div className="space-y-12">

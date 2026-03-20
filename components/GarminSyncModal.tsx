@@ -13,8 +13,9 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Progress } from '@/components/ui/progress'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { usePlanStore } from '@/lib/store'
-import { PLAN } from '@/lib/plan'
+import { getProgramBundle } from '@/lib/registry'
 import { resolveSessionDate } from '@/lib/plan-helpers'
+import { useProgramId } from '@/components/ProgramContext'
 import { shouldSkipGarminSync } from '@/lib/garmin'
 import { Watch } from 'lucide-react'
 import { TypeBadge } from '@/components/TypeBadge'
@@ -22,6 +23,8 @@ import { TypeBadge } from '@/components/TypeBadge'
 type Step = 1 | 2 | 3
 
 export function GarminSyncModal() {
+  const programId = useProgramId()
+  const plan = getProgramBundle(programId).plan
   const [open, setOpen] = useState(false)
   const [step, setStep] = useState<Step>(1)
   const [email, setEmail] = useState('')
@@ -32,17 +35,21 @@ export function GarminSyncModal() {
   const [error, setError] = useState<string | null>(null)
   const [syncedCount, setSyncedCount] = useState(0)
 
-  const dateOverrides = usePlanStore((s) => s.dateOverrides)
-  const sessionStates = usePlanStore((s) => s.sessionStates)
+  const dateOverrides = usePlanStore(
+    (s) => s.programs[programId]?.dateOverrides ?? {}
+  )
+  const sessionStates = usePlanStore(
+    (s) => s.programs[programId]?.sessionStates ?? {}
+  )
   const markGarminSynced = usePlanStore((s) => s.markGarminSynced)
   const setGarminConnected = usePlanStore((s) => s.setGarminConnected)
 
   const unsynced = useMemo(() => {
-    return PLAN.filter((s) => {
+    return plan.filter((s) => {
       if (shouldSkipGarminSync(s)) return false
       return !sessionStates[s.id]?.garminSynced
     })
-  }, [sessionStates])
+  }, [plan, sessionStates])
 
   const today = new Date()
   today.setHours(0, 0, 0, 0)
@@ -74,6 +81,7 @@ export function GarminSyncModal() {
           email,
           password,
           dryRun: true,
+          programId,
         }),
       })
       const data: unknown = await res.json()
@@ -87,7 +95,7 @@ export function GarminSyncModal() {
             : 'Connexion impossible'
         throw new Error(err)
       }
-      setGarminConnected(true)
+      setGarminConnected(programId, true)
       setStep(2)
       const init: Record<string, boolean> = {}
       for (const s of unsynced) init[s.id] = false
@@ -121,6 +129,7 @@ export function GarminSyncModal() {
           password,
           sessionIds: ids,
           dateOverrides,
+          programId,
         }),
       })
       const data: unknown = await res.json()
@@ -142,7 +151,7 @@ export function GarminSyncModal() {
         Array.isArray((data as { synced: unknown }).synced)
           ? ((data as { synced: string[] }).synced)
           : []
-      markGarminSynced(synced)
+      markGarminSynced(programId, synced)
       setSyncedCount(synced.length)
       setProgress(100)
     } catch (e: unknown) {

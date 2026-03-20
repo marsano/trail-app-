@@ -2,6 +2,7 @@
 
 import { usePlanStore, getSessionState } from '@/lib/store'
 import { Button } from '@/components/ui/button'
+import { useProgramId } from '@/components/ProgramContext'
 
 const RATINGS = [
   { v: 1 as const, emoji: '😵' },
@@ -12,7 +13,10 @@ const RATINGS = [
 ]
 
 export function FeedbackPanel({ sessionId }: { sessionId: string }) {
-  const sessionStates = usePlanStore((s) => s.sessionStates)
+  const programId = useProgramId()
+  const sessionStates = usePlanStore(
+    (s) => s.programs[programId]?.sessionStates ?? {}
+  )
   const setRating = usePlanStore((s) => s.setRating)
   const setNote = usePlanStore((s) => s.setNote)
   const st = getSessionState(sessionStates, sessionId)
@@ -29,7 +33,7 @@ export function FeedbackPanel({ sessionId }: { sessionId: string }) {
               variant={st.rating === v ? 'primary' : 'ghost'}
               size="sm"
               className="min-h-[44px] min-w-[44px] text-lg"
-              onClick={() => setRating(sessionId, v)}
+              onClick={() => setRating(programId, sessionId, v)}
               aria-label={`Note ${v}`}
             >
               {emoji}
@@ -48,7 +52,7 @@ export function FeedbackPanel({ sessionId }: { sessionId: string }) {
           id={`note-${sessionId}`}
           rows={3}
           value={st.note}
-          onChange={(e) => setNote(sessionId, e.target.value)}
+          onChange={(e) => setNote(programId, sessionId, e.target.value)}
           className="w-full resize-y rounded-md border border-[var(--border)] bg-[var(--surface)] px-3 py-2 font-mono text-sm text-[var(--text)] placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-[var(--green)]"
           placeholder="Commentaire libre…"
         />

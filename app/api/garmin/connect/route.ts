@@ -1,6 +1,6 @@
 import { GarminConnect } from 'garmin-connect'
 import axios from 'axios'
-import { PLAN } from '@/lib/plan'
+import { getProgramBundle, type ProgramId } from '@/lib/registry'
 import { resolveSessionDate } from '@/lib/plan-helpers'
 import {
   sessionToGarminRunningPayload,
@@ -35,10 +35,16 @@ interface ConnectBody {
   sessionIds?: string[]
   dryRun?: boolean
   dateOverrides?: Record<string, string>
+  programId?: string
 }
 
-function findSession(id: string) {
-  return PLAN.find((s) => s.id === id)
+function parseProgramId(raw: unknown): ProgramId | null {
+  if (raw === 'matthieu' || raw === 'loic') return raw
+  return null
+}
+
+function findSession(programId: ProgramId, id: string) {
+  return getProgramBundle(programId).plan.find((s) => s.id === id)
 }
 
 function parseOverrides(raw: unknown): Record<string, string> {
@@ -70,6 +76,14 @@ export async function POST(req: Request) {
   }
 
   const dryRun = body.dryRun === true
+  const programId = parseProgramId(body.programId)
+  if (!programId) {
+    return Response.json(
+      { error: 'programId requis (matthieu ou loic)' },
+      { status: 400 }
+    )
+  }
+
   const dateOverrides = parseOverrides(body.dateOverrides)
 
   const sessionIdsRaw = body.sessionIds
@@ -105,7 +119,7 @@ export async function POST(req: Request) {
   const synced: string[] = []
 
   for (const id of sessionIds!) {
-    const session = findSession(id)
+    const session = findSession(programId, id)
     if (!session) {
       return Response.json({ error: `Séance inconnue: ${id}` }, { status: 400 })
     }

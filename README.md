@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Ouvre [http://localhost:3000](http://localhost:3000).
+Ouvre [http://localhost:3000](http://localhost:3000) : page d’accueil avec le choix du programme (**Matthieu** 76 km ou **Loïc** 30 km). Les URLs sont `/matthieu`, `/matthieu/calendar`, `/loic`, etc.
 
 ## Déploiement Vercel
 

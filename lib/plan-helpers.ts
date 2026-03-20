@@ -1,4 +1,4 @@
-import { PLAN, type Session } from '@/lib/plan'
+import type { Session } from '@/lib/plan-types'
 
 export function resolveSessionDate(
   session: Session,
@@ -8,10 +8,11 @@ export function resolveSessionDate(
 }
 
 export function sessionsOnDate(
+  plan: Session[],
   date: string,
   overrides: Record<string, string>
 ): Session[] {
-  return PLAN.filter((s) => resolveSessionDate(s, overrides) === date)
+  return plan.filter((s) => resolveSessionDate(s, overrides) === date)
 }
 
 export type PhaseWeekGroup = {
@@ -24,10 +25,10 @@ export type PhaseWeekGroup = {
   }[]
 }
 
-export function groupPlanByPhaseWeek(): PhaseWeekGroup[] {
+export function groupPlanByPhaseWeek(plan: Session[]): PhaseWeekGroup[] {
   const phaseMap = new Map<number, PhaseWeekGroup>()
 
-  for (const s of PLAN) {
+  for (const s of plan) {
     if (!phaseMap.has(s.phase)) {
       phaseMap.set(s.phase, {
         phase: s.phase,

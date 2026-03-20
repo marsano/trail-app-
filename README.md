@@ -23,6 +23,9 @@ Ouvre [http://localhost:3000](http://localhost:3000) : page d’accueil avec le 
 
 ### Garmin Connect
 
+- **Icône montre** sur une séance : envoi **direct** sur Garmin si tu es déjà connecté (même API que « Sync Garmin »). Sinon, ouverture du modal avec la séance **pré-cochée** après connexion.
+- **Rappels** : bouton **Rappels** dans la barre de navigation (notifications navigateur pour les séances **aujourd’hui** et **demain**, une fois par séance ; fiable surtout quand l’onglet est ouvert — pas de push serveur sans backend dédié).
+
 La sync repose sur le package npm [`garmin-connect`](https://www.npmjs.com/package/garmin-connect).
 
 - **Pas de bouton « Se connecter avec Garmin » (OAuth public)** : Garmin ne propose pas ce flux pour les applications web tierces comme pour Google ou Strava. La 1re connexion utilise **email + mot de passe** ; l’API établit ensuite une **session OAuth** (jetons) renvoyés au navigateur et **stockés localement** (par programme) pour les prochaines syncs **sans redemander le mot de passe** tant que la session reste valide.

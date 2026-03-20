@@ -35,6 +35,8 @@ export interface ProgramSlice {
   sessionEdits: Record<string, SessionEdit>
   /** Séances masquées du plan (suppression locale). */
   deletedSessionIds: string[]
+  /** Rappels navigateur (Notification API) pour séances à venir. */
+  reminderBrowserEnabled: boolean
 }
 
 const emptyProgram = (): ProgramSlice => ({
@@ -45,6 +47,7 @@ const emptyProgram = (): ProgramSlice => ({
   garminTokens: null,
   sessionEdits: {},
   deletedSessionIds: [],
+  reminderBrowserEnabled: false,
 })
 
 function sliceOrEmpty(
@@ -64,6 +67,7 @@ function sliceOrEmpty(
     garminTokens: p.garminTokens ?? null,
     sessionEdits: p.sessionEdits ?? {},
     deletedSessionIds: p.deletedSessionIds ?? [],
+    reminderBrowserEnabled: p.reminderBrowserEnabled ?? false,
   }
 }
 
@@ -89,6 +93,7 @@ export interface PlanStore {
   ) => void
   clearSessionEdit: (programId: ProgramId, id: string) => void
   deleteSession: (programId: ProgramId, id: string) => void
+  setReminderBrowserEnabled: (programId: ProgramId, enabled: boolean) => void
 }
 
 type LegacyPersisted = {
@@ -372,6 +377,20 @@ export const usePlanStore = create<PlanStore>()(
                 dateOverrides: nextOverrides,
                 sessionStates: nextStates,
                 sessionEdits: nextEdits,
+              },
+            },
+          }
+        }),
+
+      setReminderBrowserEnabled: (programId, enabled) =>
+        set((s) => {
+          const cur = sliceOrEmpty(s.programs, programId)
+          return {
+            programs: {
+              ...s.programs,
+              [programId]: {
+                ...cur,
+                reminderBrowserEnabled: enabled,
               },
             },
           }

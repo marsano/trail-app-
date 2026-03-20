@@ -17,26 +17,35 @@ import { useEffectivePlan } from '@/hooks/useEffectivePlan'
 import { resolveSessionDate } from '@/lib/plan-helpers'
 import { useProgramId } from '@/components/ProgramContext'
 import { shouldSkipGarminSync } from '@/lib/garmin'
-import type { GarminTokensPayload } from '@/lib/garmin-types'
+import {
+  buildGarminSyncBody,
+  postGarminConnect,
+  type GarminConnectResponse,
+} from '@/lib/garmin-sync-client'
 import { Watch } from 'lucide-react'
 import { TypeBadge } from '@/components/TypeBadge'
 
 type Step = 1 | 2 | 3
 
-type ConnectResponse = {
-  success?: boolean
-  error?: string
-  tokens?: GarminTokensPayload
-  synced?: string[]
+export type GarminSyncModalProps = {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  /** Pré-cocher cette séance après connexion (ex. depuis la carte). */
+  focusSessionId?: string | null
+  onFocusConsumed?: () => void
 }
 
-export function GarminSyncModal() {
+export function GarminSyncModal({
+  open,
+  onOpenChange,
+  focusSessionId,
+  onFocusConsumed,
+}: GarminSyncModalProps) {
   const programId = useProgramId()
   const plan = useEffectivePlan(programId)
   const sessionEdits = usePlanStore(
     (s) => s.programs[programId]?.sessionEdits ?? {}
   )
-  const [open, setOpen] = useState(false)
   const [step, setStep] = useState<Step>(1)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -90,14 +99,27 @@ export function GarminSyncModal() {
   }
 
   function handleOpenChange(v: boolean) {
-    setOpen(v)
+    onOpenChange(v)
     if (!v) resetModal()
   }
 
-  function persistSessionFromResponse(data: ConnectResponse, emailUsed: string) {
+  function persistSessionFromResponse(data: GarminConnectResponse, emailUsed: string) {
     if (data.tokens) {
       setGarminSession(programId, { email: emailUsed, tokens: data.tokens })
     }
+  }
+
+  function applySelectionAfterConnect() {
+    const init: Record<string, boolean> = {}
+    for (const s of unsynced) init[s.id] = false
+    if (
+      focusSessionId &&
+      unsynced.some((s) => s.id === focusSessionId)
+    ) {
+      init[focusSessionId] = true
+      onFocusConsumed?.()
+    }
+    setSelected(init)
   }
 
   async function connectOnly() {
@@ -109,35 +131,28 @@ export function GarminSyncModal() {
         throw new Error('Indique ton email Garmin.')
       }
 
-      const body: Record<string, unknown> = {
+      const body = buildGarminSyncBody({
         email: emailUsed,
         dryRun: true,
         programId,
-      }
-      if (hasStoredSession && garminTokens) {
-        body.garminTokens = garminTokens
-      } else {
-        if (!password) throw new Error('Indique ton mot de passe Garmin.')
-        body.password = password
-      }
-      if (Object.keys(sessionEdits).length > 0) {
-        body.sessionEdits = sessionEdits
+        garminTokens: hasStoredSession ? garminTokens : null,
+        password:
+          !hasStoredSession && password ? password : undefined,
+        dateOverrides,
+        sessionEdits,
+      })
+
+      if (!hasStoredSession && !password) {
+        throw new Error('Indique ton mot de passe Garmin.')
       }
 
-      const res = await fetch('/api/garmin/connect', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      })
-      const data = (await res.json()) as ConnectResponse
-      if (!res.ok) {
+      const { ok, data } = await postGarminConnect(body)
+      if (!ok) {
         throw new Error(data.error ?? 'Connexion impossible')
       }
       persistSessionFromResponse(data, emailUsed)
       setStep(2)
-      const init: Record<string, boolean> = {}
-      for (const s of unsynced) init[s.id] = false
-      setSelected(init)
+      applySelectionAfterConnect()
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Erreur')
     } finally {
@@ -172,33 +187,23 @@ export function GarminSyncModal() {
 
     try {
       const emailUsed = (hasStoredSession ? garminAccountEmail : email).trim()
-      const body: Record<string, unknown> = {
+      const body = buildGarminSyncBody({
         email: emailUsed,
+        programId,
         sessionIds: ids,
         dateOverrides,
-        programId,
-      }
-      if (hasStoredSession && garminTokens) {
-        body.garminTokens = garminTokens
-      } else {
-        body.password = password
-      }
-      if (Object.keys(sessionEdits).length > 0) {
-        body.sessionEdits = sessionEdits
-      }
-
-      const res = await fetch('/api/garmin/connect', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
+        sessionEdits,
+        garminTokens: hasStoredSession ? garminTokens : null,
+        password:
+          !hasStoredSession && password ? password : undefined,
       })
-      const data = (await res.json()) as ConnectResponse
+
+      const { ok, data } = await postGarminConnect(body)
       setProgress(95)
-      if (!res.ok) {
+      if (!ok) {
         throw new Error(data.error ?? 'Synchronisation impossible')
       }
-      const synced =
-        Array.isArray(data.synced) ? data.synced : []
+      const synced = Array.isArray(data.synced) ? data.synced : []
       markGarminSynced(programId, synced)
       persistSessionFromResponse(data, emailUsed)
       setSyncedCount(synced.length)
@@ -230,7 +235,7 @@ export function GarminSyncModal() {
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={() => onOpenChange(true)}
         className="fixed bottom-6 right-6 z-40 flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--green)] px-5 py-3 font-mono text-sm font-semibold text-[#0a0c0b] shadow-lg transition hover:opacity-90"
       >
         <Watch className="h-5 w-5" />

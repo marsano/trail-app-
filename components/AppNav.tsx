@@ -2,17 +2,46 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { Bell, BellOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useProgramId } from '@/components/ProgramContext'
 import { PROGRAM_LIST, getProgramBundle } from '@/lib/registry'
 import type { ProgramId } from '@/lib/registry'
+import { usePlanStore } from '@/lib/store'
+import { Button } from '@/components/ui/button'
 
 export function AppNav() {
   const pathname = usePathname()
   const programId = useProgramId()
   const base = `/${programId}`
 
+  const reminderEnabled = usePlanStore(
+    (s) => s.programs[programId]?.reminderBrowserEnabled ?? false
+  )
+  const setReminderBrowserEnabled = usePlanStore(
+    (s) => s.setReminderBrowserEnabled
+  )
+
   const routeSuffix = pathname.replace(/^\/[^/]+/, '') || ''
+
+  async function toggleReminders() {
+    if (!reminderEnabled) {
+      if (!('Notification' in globalThis)) {
+        globalThis.alert(
+          'Les notifications ne sont pas disponibles dans ce navigateur.'
+        )
+        return
+      }
+      const p = await Notification.requestPermission()
+      if (p !== 'granted') {
+        globalThis.alert(
+          'Notifications refusées. Autorise-les pour ce site dans les réglages du navigateur.'
+        )
+        return
+      }
+    }
+    setReminderBrowserEnabled(programId, !reminderEnabled)
+  }
 
   const LINKS = [
     { href: base, label: 'Plan' },
@@ -50,7 +79,27 @@ export function AppNav() {
             )
           })}
         </div>
-        <div className="flex flex-1 flex-wrap gap-1 sm:justify-end">
+        <div className="flex flex-1 flex-wrap items-center gap-1 sm:justify-end">
+          <Button
+            type="button"
+            variant={reminderEnabled ? 'primary' : 'ghost'}
+            size="sm"
+            className="font-mono text-xs"
+            title="Rappels navigateur pour les séances aujourd’hui / demain (fonctionne surtout quand l’app est ouverte)"
+            onClick={() => void toggleReminders()}
+          >
+            {reminderEnabled ? (
+              <>
+                <Bell className="mr-1 h-3.5 w-3.5" />
+                Rappels
+              </>
+            ) : (
+              <>
+                <BellOff className="mr-1 h-3.5 w-3.5" />
+                Rappels
+              </>
+            )}
+          </Button>
           {LINKS.map(({ href, label }) => {
             const active =
               href === base

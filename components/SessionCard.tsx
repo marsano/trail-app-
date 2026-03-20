@@ -15,7 +15,17 @@ import {
 } from '@/lib/session-duration'
 import { resolveSessionDate, todayISO } from '@/lib/plan-helpers'
 import { useProgramId } from '@/components/ProgramContext'
-import { MessageSquare, Watch, CheckCircle2, Pencil, Trash2 } from 'lucide-react'
+import { useOpenGarminModal } from '@/components/GarminSyncOpenContext'
+import { useGarminQuickSync } from '@/hooks/useGarminQuickSync'
+import { shouldSkipGarminSync } from '@/lib/garmin'
+import {
+  MessageSquare,
+  Watch,
+  CheckCircle2,
+  Pencil,
+  Trash2,
+  Loader2,
+} from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export function SessionCard({
@@ -39,6 +49,9 @@ export function SessionCard({
   const isToday = effectiveDate === today
   const rowRef = useRef<HTMLDivElement>(null)
   const durationMin = estimateSessionDurationMinutes(session)
+  const openGarminModal = useOpenGarminModal()
+  const { syncSessionIds, syncing, error: garminError, setError: setGarminError, isGarminReady } =
+    useGarminQuickSync()
 
   useEffect(() => {
     if (isToday && rowRef.current) {
@@ -57,6 +70,19 @@ export function SessionCard({
     }
     deleteSession(programId, session.id)
   }
+
+  async function handleGarminClick() {
+    setGarminError(null)
+    if (shouldSkipGarminSync(session)) return
+    if (st.garminSynced) return
+    if (!isGarminReady) {
+      openGarminModal({ focusSessionId: session.id })
+      return
+    }
+    await syncSessionIds([session.id])
+  }
+
+  const skipGarmin = shouldSkipGarminSync(session)
 
   return (
     <>
@@ -160,11 +186,30 @@ export function SessionCard({
                   className="h-5 w-5 text-[var(--green)]"
                   aria-label="Synchronisé Garmin"
                 />
-              ) : (
+              ) : skipGarmin ? (
                 <Watch
-                  className="h-5 w-5 text-zinc-600"
-                  aria-label="Pas encore sur Garmin"
+                  className="h-5 w-5 text-zinc-700 opacity-40"
+                  aria-hidden
                 />
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => void handleGarminClick()}
+                  disabled={syncing}
+                  className="rounded p-0.5 text-zinc-500 transition hover:text-[var(--green)] disabled:opacity-50"
+                  title={
+                    isGarminReady
+                      ? 'Envoyer cette séance sur Garmin Connect'
+                      : 'Connexion Garmin requise — ouvre la sync'
+                  }
+                  aria-label="Envoyer sur Garmin Connect"
+                >
+                  {syncing ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <Watch className="h-5 w-5" />
+                  )}
+                </button>
               )}
               <Button
                 type="button"
@@ -188,6 +233,10 @@ export function SessionCard({
             ≈ {formatDurationLabel(durationMin)}
           </span>
         </div>
+
+        {garminError ? (
+          <p className="mt-2 font-mono text-xs text-[var(--red)]">{garminError}</p>
+        ) : null}
 
         {feedbackOpen ? <FeedbackPanel sessionId={session.id} /> : null}
       </div>

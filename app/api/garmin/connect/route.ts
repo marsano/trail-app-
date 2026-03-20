@@ -131,7 +131,7 @@ async function getGarminClient(
 }
 
 function parseProgramId(raw: unknown): ProgramId | null {
-  if (raw === 'matthieu' || raw === 'loic') return raw
+  if (raw === 'matthieu' || raw === 'loic' || raw === 'thelma') return raw
   return null
 }
 
@@ -190,7 +190,7 @@ export async function POST(req: Request) {
   const programId = parseProgramId(body.programId)
   if (!programId) {
     return Response.json(
-      { error: 'programId requis (matthieu ou loic)' },
+      { error: 'programId requis (matthieu, loic ou thelma)' },
       { status: 400 }
     )
   }

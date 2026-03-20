@@ -125,6 +125,7 @@ function createTrailPlanStorage(): StateStorage {
                 garminConnected: st.garminConnected ?? false,
               },
               loic: emptyProgram(),
+              thelma: emptyProgram(),
             },
           },
           version: 2,
@@ -158,6 +159,7 @@ function mergePersisted(
     programs: {
       matthieu: sliceOrEmpty(programs, 'matthieu'),
       loic: sliceOrEmpty(programs, 'loic'),
+      thelma: sliceOrEmpty(programs, 'thelma'),
     },
   }
 }
@@ -168,6 +170,7 @@ export const usePlanStore = create<PlanStore>()(
       programs: {
         matthieu: emptyProgram(),
         loic: emptyProgram(),
+        thelma: emptyProgram(),
       },
 
       toggleDone: (programId, id) =>

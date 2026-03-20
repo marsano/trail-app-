@@ -3,8 +3,9 @@ import type { PlanEvent } from './plan-types'
 import type { RaceInfo } from './plan-types'
 import * as Matthieu from './plans/matthieu'
 import * as Loic from './plans/loic'
+import * as Thelma from './plans/thelma'
 
-export type ProgramId = 'matthieu' | 'loic'
+export type ProgramId = 'matthieu' | 'loic' | 'thelma'
 
 export interface ProgramBundle {
   id: ProgramId
@@ -35,14 +36,23 @@ const REGISTRY: Record<ProgramId, ProgramBundle> = {
     raceInfo: Loic.RACE_INFO,
     events: Loic.EVENTS,
   },
+  thelma: {
+    id: 'thelma',
+    athleteName: 'Thelma',
+    slug: 'thelma',
+    distanceLabel: 'Plan à venir',
+    plan: Thelma.PLAN,
+    raceInfo: Thelma.RACE_INFO,
+    events: Thelma.EVENTS,
+  },
 }
 
-export const PROGRAM_LIST: ProgramId[] = ['matthieu', 'loic']
+export const PROGRAM_LIST: ProgramId[] = ['matthieu', 'loic', 'thelma']
 
 export function getProgramBundle(id: ProgramId): ProgramBundle {
   return REGISTRY[id]
 }
 
 export function isProgramSlug(s: string): s is ProgramId {
-  return s === 'matthieu' || s === 'loic'
+  return s === 'matthieu' || s === 'loic' || s === 'thelma'
 }

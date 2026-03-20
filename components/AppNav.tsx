@@ -12,13 +12,13 @@ export function AppNav() {
   const programId = useProgramId()
   const base = `/${programId}`
 
-  const routeSuffix =
-    pathname.replace(/^\/(matthieu|loic)/, '') || ''
+  const routeSuffix = pathname.replace(/^\/[^/]+/, '') || ''
 
   const LINKS = [
     { href: base, label: 'Plan' },
     { href: `${base}/calendar`, label: 'Calendrier' },
     { href: `${base}/dashboard`, label: 'Dashboard' },
+    { href: `${base}/print`, label: 'Tableau' },
   ]
 
   return (

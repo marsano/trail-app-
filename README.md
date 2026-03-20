@@ -9,7 +9,10 @@ npm install
 npm run dev
 ```
 
-Ouvre [http://localhost:3000](http://localhost:3000) : page d’accueil avec le choix du programme (**Matthieu** 76 km ou **Loïc** 33 km). Les URLs sont `/matthieu`, `/matthieu/calendar`, `/loic`, etc.
+Ouvre [http://localhost:3000](http://localhost:3000) : page d’accueil avec le choix du programme (**Matthieu**, **Loïc**, **Thelma**). Les URLs sont `/matthieu`, `/matthieu/calendar`, `/matthieu/print`, `/loic`, `/thelma`, etc.
+
+- **Thelma** : plan vide pour l’instant (`lib/plans/thelma.ts`) — à compléter comme pour les autres.
+- **Tableau / impression** : depuis la nav d’un programme, lien **Tableau** (`/[program]/print`) : tableau avec dates effectives, type, km, D+, détail séance et notes ; boutons **Imprimer** (aperçu système) et **Télécharger CSV** (séparateur `;`, UTF-8 avec BOM pour Excel).
 
 - **Navigation** : barre du haut fixe au défilement.
 - **Calendrier ↔ plan** : les dates déplacées dans le calendrier s’appliquent au plan ; le plan est regroupé par **semaines calendaires** (lundi) selon les dates effectives.

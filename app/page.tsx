@@ -8,8 +8,9 @@ export default function HomePage() {
         Trail Plan
       </h1>
       <p className="mt-3 font-mono text-sm text-zinc-500">
-        Choisis un espace d’entraînement. Chaque programme a son propre plan,
-        calendrier et stats (stockés dans ce navigateur).
+        Choisis un espace d’entraînement (Matthieu, Loïc, Thelma). Chaque
+        programme a son propre plan, calendrier, stats et tableau imprimable
+        (stockés dans ce navigateur).
       </p>
 
       <ul className="mt-10 flex flex-col gap-4">
